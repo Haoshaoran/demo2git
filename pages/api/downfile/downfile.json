@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "thi is downfile test",
+  "usingComponents": {
+    "my-component-dialog": "../../authordialog/authordialog"
+  }
+}

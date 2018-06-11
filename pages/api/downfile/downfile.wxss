@@ -1,0 +1,2 @@
+/* pages/api/downfile/downfile.wxss */
+@import "../../tabbarone/tabbarone.wxss";

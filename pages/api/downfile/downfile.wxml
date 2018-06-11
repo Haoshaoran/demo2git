@@ -1,0 +1,28 @@
+<button bindtap="downloadFile">下载视频</button>
+<!-- open-type="openSetting" bindopensetting="bindopensetting"  -->
+<button bindtap="downloadImage">下载图片</button>
+<image wx:if="{{!hasvideo}}" src="{{imagepath}}" style='width:100%'></image>
+<block wx:else>
+<video id="myVideo" wx:if="{{srcurl}}" src="{{srcurl}}" controls="{{true}}" event-model="bubble" bindtimeupdate="updatetime" show-progress="{{true}}" show-fullscreen-btn="{{true}}" show-play-btn="{{true}}" show-center-play-btn="{{true}}" binderror="binderror" bindfullscreenchange="bindfullscreenchange"  style='width:100%'>
+  <cover-view class="controls">
+    <cover-view class="play" bindtap="play">
+      <cover-image class="img" src="/images/play.png" />
+    </cover-view>
+    <cover-view class="pause" bindtap="pause">
+      <cover-image class="img" src="/images/pause.png" />
+    </cover-view>
+    <cover-view class="time">{{time}}</cover-view>
+  </cover-view>
+</video>
+</block>
+<my-component-dialog
+bind:determineevent="onMyEvent"
+dialog-hidden="{{isHidden}}"
+title-msg="{{titleMsg}}"
+input-hidden="{{inputHidden}}"
+cancle-btn="{{cancleBtn}}"
+input-place-halder="{{inputPlaceHolder}}"
+author-title="{{authorTitle}}"
+sure-msg="{{sureMsg}}"
+bindsureevent="sureBtn"
+/>

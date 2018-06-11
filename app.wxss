@@ -1,0 +1,18 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: space-between;
+  padding: 100rpx;
+  box-sizing: border-box;
+}
+.barstyle{
+  position: fixed;
+  top:55rpx;
+  left: 20rpx;
+  margin: auto;
+  font-size: 17pt;
+  color: #000000;
+}

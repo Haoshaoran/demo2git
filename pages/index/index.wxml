@@ -1,0 +1,42 @@
+<view style="text-align:center"> {{title}} </view>
+<view> 点击左上角返回回到之前页面 </view>
+
+
+<!--index.wxml-->
+<import src="../tabbarone/tabbarone.wxml"/>
+<wxs src="../../utils/util.wxs" module="util"/>
+<view class="section">
+   <view class="section__title">movable-view区域小于movable-area</view>
+  <movable-area style="height: 200px; width: 200px; background: red;">
+    <movable-view style="height: 50px; width: 50px; background: blue;" x="{{x}}" y="{{y}}" direction="all">
+    </movable-view>
+  </movable-area>
+  <view class="btn-area">
+    <button size="mini" bindtap="tap">click me to move to (30px, 30px)</button>
+  </view> 
+  <view class="section__title">movable-view区域大于movable-area</view>
+  <movable-area style="height: 100px; width: 100px; background: red;  margin: 100rpx;">
+    <movable-view style="height: 200px; width: 200px; background: blue;" direction="all" out-of-bounds="{{true}}" >
+    </movable-view>
+  </movable-area>
+   <view class="section__title">可放缩</view>
+  <movable-area style="height: 200px; width: 200px; background: red;" scale-area>
+    <movable-view style="height: 50px; width: 50px; background: blue;" direction="all" bindchange="onChange" bindscale="onScale" scale scale-min="0.5" scale-max="4" scale-value="2">
+    </movable-view>
+  </movable-area> 
+</view>
+
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">{{util.msg}}获取头像昵称</button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname" >{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view  class="usermotto" bindtap='clickback'>
+    <text class="user-motto" >{{motto}}</text>
+  </view>
+  <template is="msgItem" data="{{...item}}"/>
+</view>
+

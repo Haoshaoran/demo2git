@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "商店",
+  "usingComponents": {
+    "my-component-dialog": "../authordialog/authordialog"
+  }
+}

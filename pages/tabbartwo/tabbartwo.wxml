@@ -1,0 +1,101 @@
+<open-data type="groupName" open-id="{{openid}}" lang='zh_CN'></open-data>
+<button bindtap='getopenid'>获取open-id</button>
+<open-data type="userGender" open-id="222" lang='zh_CN'></open-data>
+<!--textarea.wxml-->
+<view class="section">
+  <textarea bindblur="bindTextAreaBlur" auto-height placeholder="自动变高" />
+</view>
+<view class="section">
+  <textarea placeholder="placeholder颜色是红色的" placeholder-style="color:red;"  />
+</view>
+<view class="section">
+  <textarea placeholder="这是一个可以自动聚焦的textarea" auto-focus />
+</view>
+<view class="section">
+  <textarea placeholder="这个只有在按钮点击的时候才聚焦" focus="{{focus}}" />
+  <view class="btn-area">
+    <button bindtap="bindButtonTap">使得输入框获取焦点</button>
+  </view>
+</view>
+<view class="section">
+  <form bindsubmit="bindFormSubmit">
+    <textarea placeholder="form 中的 textarea" name="textarea"/>
+    <button form-type="submit"> 提交 </button>
+  </form>
+</view>
+
+
+<!--picker  -->
+<view class="section">
+  <view class="section__title">普通选择器</view>
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view class="picker">
+      当前选择：{{array[index]}}
+    </view>
+  </picker>
+</view>
+<view class="section">
+  <view class="section__title">多列选择器</view>
+  <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+    <view class="picker">
+      当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+    </view>
+  </picker>
+</view>
+<view class="section">
+  <view class="section__title">时间选择器</view>
+  <picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+    <view class="picker">
+      当前选择: {{time}}
+    </view>
+  </picker>
+</view>
+
+<view class="section">
+  <view class="section__title">日期选择器</view>
+  <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+    <view class="picker">
+      当前选择: {{date}}
+    </view>
+  </picker>
+</view>
+<view class="section">
+  <view class="section__title">省市区选择器</view>
+  <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+    <view class="picker">
+      当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
+    </view>
+  </picker>
+</view>
+
+
+<view class='container' >
+<text class='texttwo'>{{textwo}}</text>
+ <scroll-view scroll-y='true'  class='scrollstyle'>
+    <view class='onestyle'>
+      <view id="green" class="scroll-view-item_bc_green" >aaa</view>
+      <view id="red"  class="scroll-view-item_bc_red">bbb</view>
+      <view id="yellow" class="scroll-view-item_bc_yellow">ccc</view>
+      <view id="blue" class="scroll-view-item_bc_blue">ddd</view>
+    </view>
+  </scroll-view>
+  <view class="container">
+    <button size="mini" bindtap="tap">click me to scroll into view </button>
+    <button size="mini" bindtap="tapMove">click me to scroll</button>
+  </view>
+  <!--，要想横向滚动，首先要先把子元素设置成一行，发现float不能用
+要对子元素进行display:inline-block ,容器进行 white-space: nowrap;  -->
+  <scroll-view scroll-x='true'  class='scrollstyle2'>
+    <!-- <view class='onestyle2'> -->
+      <view id="green" class="scroll-view-item_bc_green" >aaa</view>
+      <view id="red"  class="scroll-view-item_bc_red">bbb</view>
+      <view id="yellow" class="scroll-view-item_bc_yellow">ccc</view>
+      <view id="blue" class="scroll-view-item_bc_blue">ddd</view>
+    <!-- </view> -->
+  </scroll-view>
+</view>
+
+<!-- canvas.wxml -->
+<canvas style="width: 300px; height: 200px;" canvas-id="firstCanvas" binderror="canvasIdErrorCallback"></canvas>
+
+

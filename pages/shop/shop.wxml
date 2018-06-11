@@ -1,0 +1,37 @@
+<!--pages/shop/shop.wxml-->
+<!-- <text >商店</text> -->
+ <button bindtap='getLocationClick'>{{location}}</button>
+<button bindtap='chooseLocationClick'>打开地图</button>
+<button bindtap='showModal'>showModal</button>
+<button bindtap='showoperamenu'>showActionSheet</button>
+<button bindtap='setNavigationBarTitle'>setNavigationBarTitle</button>
+<button bindtap='setTopBarText'>setTopBarText</button>
+<view class='userinfo'>
+<button bindtap='showNavigationBarLoading'>showBarLoading</button>
+<button bindtap='hideNavigationBarLoading'>hideBarLoading</button>
+</view>
+<button bindtap='setNavigationBarColor'>setNavigationBarColor</button>
+
+<button bindtap='setTabBarBadge'>setTabBarBadge</button>
+<button bindtap='removeTabBarBadge'>removeTabBarBadge</button>
+<button bindtap='showTabBarRedDot'>showTabBarRedDot</button>
+<button bindtap='hideTabBarRedDot'>hideTabBarRedDot</button>
+<button bindtap='setTabBarStyle'>setTabBarStyle</button>
+<button bindtap='setTabBarItem'>setTabBarItem</button>
+<button bindtap='showTabBar'>showTabBar</button>
+<button bindtap='hideTabBar'>hideTabBar</button>
+<button bindtap='pageScrollTo'>pageScrollTo</button>
+<button bindtap='getFields' id='btfield' >getFields</button>
+<button bindtap='chooseAddress' >chooseAddress</button>
+<!-- <view animation="{{animationData}}" style="background:red;height:100rpx;width:100rpx"></view> -->
+<my-component-dialog
+bind:determineevent="onMyEvent"
+dialog-hidden="{{isHidden}}"
+title-msg="{{titleMsg}}"
+cancle-btn="{{cancleBtn}}"
+author-title="{{authorTitle}}"
+sure-msg="{{sureMsg}}"
+bind:openevent="sureBtn"
+/> 
+
+

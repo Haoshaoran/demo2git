@@ -1,0 +1,44 @@
+/* pages/tabbartwo/tabbartwo.wxss */
+.onestyle{
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+.onestyle2{
+  display: flex;
+  flex-direction: fow;
+  align-items: center; 
+}
+.scrollstyle{
+  height: 50px;
+  align-items: center;
+  }
+  .scrollstyle2{
+  width: 100%;
+  white-space: nowrap;
+  }
+.scroll-view-item_bc_green{
+   width: 50%; 
+ display: inline-block;
+  text-align: center;
+
+  background-color: green;
+}
+.scroll-view-item_bc_red{
+   width: 50%; 
+ display: inline-block;
+   text-align: center;
+  background-color: red;
+}
+.scroll-view-item_bc_yellow{
+   width: 50%; 
+ display: inline-block;
+   text-align: center;
+  background-color: yellow;
+}
+.scroll-view-item_bc_blue{
+width: 50%;
+text-align: center;
+background-color: blue;
+ display: inline-block;
+}

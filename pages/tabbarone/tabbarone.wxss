@@ -1,0 +1,42 @@
+/* pages/tabbarone/tabbarone.wxss */
+/*cover-view*/
+.controls {
+  position: relative;
+  top: 50%;
+  height: 50px;
+  margin-top: -25px;
+  display: flex;
+}
+.play,.pause,.time {
+  flex: 1;
+  height: 100%;
+ 
+}
+.time {
+  text-align: center;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  line-height: 50px;
+}
+.img {
+  width: 40px;
+  height: 40px;
+  margin: 5px auto;
+}
+/** 修改默认的navigator点击态 **/
+.navigator-hover {
+    color:blue;
+}
+/** 自定义其他点击态样式类 **/
+.other-navigator-hover {
+    color:red;
+}
+.cat {
+  margin-top: 0.3em;
+  font-size: 10em;
+}
+.fiximage{
+  width: wrapcontent;
+  height: wrapcontent;
+  
+}
