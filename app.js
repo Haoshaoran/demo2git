@@ -79,6 +79,5 @@ App({
   },
   onError : function(msg){
     console.log('app onerror,'+msg);
-    console.log("11111");
   }
 })
