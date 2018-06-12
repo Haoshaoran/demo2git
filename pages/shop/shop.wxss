@@ -1,2 +1,10 @@
 /* pages/shop/shop.wxss */
 @import "../index/index.wxss";
+.buttonstyle{
+  width: 100%;
+  font-size: large;
+  background-color: #f8f8f8;
+  text-align: center;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}

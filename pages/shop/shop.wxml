@@ -23,6 +23,9 @@
 <button bindtap='pageScrollTo'>pageScrollTo</button>
 <button bindtap='getFields' id='btfield' >getFields</button>
 <button bindtap='chooseAddress' >chooseAddress</button>
+<view > 
+<navigator  class='buttonstyle' target="miniProgram" open-type="navigate" app-id="wxa313dd62b383db3b" path="" extra-data="" version="develop">打开绑定的小程序</navigator>
+</view>
 <!-- <view animation="{{animationData}}" style="background:red;height:100rpx;width:100rpx"></view> -->
 <my-component-dialog
 bind:determineevent="onMyEvent"
