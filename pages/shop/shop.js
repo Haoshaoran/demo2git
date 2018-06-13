@@ -430,4 +430,50 @@ Page({
       }
     })
   },
+  //获取本机支持的SOTER生物认证方式,需真机调试
+  checkIsSupportSoterAuthentication:function(){
+    wx.checkIsSupportSoterAuthentication({
+      success:res=>{
+        console.log("获取生物认证方式成功",res)
+      },
+      fail:res=>{
+        console.log("获取生物认证方式失败",res);
+      },
+      complete:res=>{
+        console.log("获取生物认证方式完成", res);
+      }
+    })
+  },
+  //开始 SOTER 生物认证
+  startSoterAuthentication:function(){
+    wx.startSoterAuthentication({
+      requestAuthModes: ['fingerPrint'],//暂只支持指纹识别
+      challenge: '123456',
+      authContent: '请用指纹解锁',
+      success(res){
+        console.log("生物认证成功",res);
+      },
+      fail(res){
+        console.log("生物认证失败", res);
+      },
+      complete(res){
+        console.log("生物认证完成", res);
+      }
+    })
+  },
+  // 获取设备内是否录入如指纹等生物信息的接口
+  checkIsSoterEnrolledInDevice:function(){
+    wx.checkIsSoterEnrolledInDevice({
+      checkAuthMode: 'fingerPrint',
+      success(res) {
+        console.log("获取生物信息成功", res);
+      },
+      fail(res) {
+        console.log("获取生物信息失败", res);
+      },
+      complete(res) {
+        console.log("获取生物信息完成", res);
+      }
+    })
+  },
 })
