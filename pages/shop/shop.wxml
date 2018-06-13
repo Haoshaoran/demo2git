@@ -23,9 +23,15 @@
 <button bindtap='pageScrollTo'>pageScrollTo</button>
 <button bindtap='getFields' id='btfield' >getFields</button>
 <button bindtap='chooseAddress' >chooseAddress</button>
+
 <button bindtap='checkIsSupportSoterAuthentication' >取本机支持SOTER生物认证方式</button>
 <button bindtap='startSoterAuthentication' >开始 SOTER 生物认证</button>
 <button bindtap='checkIsSoterEnrolledInDevice' >是否录入如指纹等生物信息</button>
+
+<view > 
+<navigator  class='buttonstyle' target="miniProgram" open-type="navigate" app-id="wxa313dd62b383db3b" path="" extra-data="" version="develop">打开绑定的小程序</navigator>
+</view>
+
 <!-- <view animation="{{animationData}}" style="background:red;height:100rpx;width:100rpx"></view> -->
 <my-component-dialog
 bind:determineevent="onMyEvent"
