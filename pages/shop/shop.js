@@ -1,8 +1,8 @@
 // pages/shop/shop.js
-var util=require("../../utils/util.js")
+var util = require("../../utils/util.js")
 var amapFile = require("../../libs/amap-wx.js");
 var app = getApp();
-var num=1;
+var num = 1;
 var query = wx.createSelectorQuery();
 Page({
 
@@ -15,17 +15,19 @@ Page({
     sureMsg: "去设置",
     authorTitle: "",
     cancleBtn: false,
-    location:"获取地址",
-    operatetype:0,
-    key:"d29edb092fbe4eabb27aab5f84d56693",
-    animationData: {}
+    location: "获取地址",
+    operatetype: 0,
+    key: "d29edb092fbe4eabb27aab5f84d56693",
+    animationData: {},
+    imagehidden: true,
+    ctPath: ''
   },
   getLocationClick: function () {
-    this.data.operatetype=0;
+    this.data.operatetype = 0;
     this.operatelocation(false, 0);
   },
   //isSetBack 是否为从授权页面返回;operatetype 0获取本地物理地址,1打开地图选择位置
-  operatelocation: function (isSetBack,operatetype) {
+  operatelocation: function (isSetBack, operatetype) {
     var that = this;
     var hasData = wx.getStorageSync("userLocation");
     var storage = wx.getStorageInfoSync();
@@ -37,9 +39,9 @@ Page({
           that.showDialog();
         } else {
           // debugger;
-          if(operatetype==0){
+          if (operatetype == 0) {
             that.getlocationInfo(hasData)
-          }else{
+          } else {
             that.chooselocation(hasData)
           }
         }
@@ -50,11 +52,11 @@ Page({
     })
   },
   //获取本地地址并打开
-  getlocationInfo:function(hasData){
+  getlocationInfo: function (hasData) {
     wx.showLoading({
       title: '加载中',
     });
-    let that=this
+    let that = this
     wx.getLocation({
       // type: "gcj02 ",//可用于wx.openLocation的坐标
       altitude: true,
@@ -71,7 +73,7 @@ Page({
       },
       fail: function (res) {
         console.log("获取地址失败", res)
-        that.showToast("获取地址失败"+res,"none");
+        that.showToast("获取地址失败" + res, "none");
         if (!hasData) {
           that.showDialog();
         }
@@ -96,9 +98,9 @@ Page({
     this.setData({
       isHidden: true,
     })
-    var version=wx.getSystemInfoSync().SDKVersion;
-    console.log("version=",version);
-    if (!util.compareVersion(version,"2.0.7")) {
+    var version = wx.getSystemInfoSync().SDKVersion;
+    console.log("version=", version);
+    if (!util.compareVersion(version, "2.0.7")) {
       console.log("canuse")
       wx.openSetting({
         success: res => {
@@ -117,45 +119,45 @@ Page({
     this.operatelocation(true, this.data.operatetype);
   },
   //​使用微信内置地图查看位置。wx.openLocation
-  openlocation: function (longitudes, latitude){
+  openlocation: function (longitudes, latitude) {
     wx.openLocation({
       latitude: latitude,
       longitude: longitudes,
-      success:res=>{
-        console.log("查看地理位置成功",res)
+      success: res => {
+        console.log("查看地理位置成功", res)
       },
-      fail:res=>{
+      fail: res => {
         console.log("查看地理位置失败", res)
       }
     })
 
   },
-  chooseLocationClick:function(){
+  chooseLocationClick: function () {
     this.data.operatetype = 1;
     this.operatelocation(false, 1);
   },
-//  打开地图选择位置。
-  chooselocation: function (hasData){
+  //  打开地图选择位置。
+  chooselocation: function (hasData) {
     wx.showLoading({
       title: '加载中',
     });
     let that = this
-   wx.chooseLocation({
-     success: function(res) {
-       console.log("选择地图位置成功",res);
-     },
-     fail:function(res){
-       console.log("选择地图位置失败", res);
-       if (!hasData) {
-         that.showDialog();
-       }
-     },
+    wx.chooseLocation({
+      success: function (res) {
+        console.log("选择地图位置成功", res);
+      },
+      fail: function (res) {
+        console.log("选择地图位置失败", res);
+        if (!hasData) {
+          that.showDialog();
+        }
+      },
       complete: function (res) {
-       wx.hideLoading();
-       wx.setStorageSync("userLocation", "1");
-       console.log("选择地图完成", res)
-     },
-   })
+        wx.hideLoading();
+        wx.setStorageSync("userLocation", "1");
+        console.log("选择地图完成", res)
+      },
+    })
   },
   /**
  * 生命周期函数--监听页面加载
@@ -240,16 +242,16 @@ Page({
   showModal: function () {
     wx.showModal({
       title: 'showModal',
-      content: 'this is showModal'+"\n"+'hello world',
-      showCancel:true,
-      cancelText:'取消',
-      cancelColor:'#0bb50b',
-      confirmText:'确定',
-      confirmColor:'#4e8cff',
-      success:res=>{
+      content: 'this is showModal' + "\n" + 'hello world',
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#0bb50b',
+      confirmText: '确定',
+      confirmColor: '#4e8cff',
+      success: res => {
         console.log("显示模拟窗成功")
       },
-      fail:res=>{
+      fail: res => {
         console.log("显示模拟窗失败")
       }
     })
@@ -259,31 +261,31 @@ Page({
     wx.showActionSheet({
       itemList: ['A', 'B', 'C'],
       success: function (res) {
-        console.log("showActionsuccess",res)
+        console.log("showActionsuccess", res)
       },
       fail: function (res) {
-        console.log("showActionfail",res)
+        console.log("showActionfail", res)
       }
     })
   },
   // 动态设置当前页面的标题。
-  setNavigationBarTitle:function(){
+  setNavigationBarTitle: function () {
     wx.setNavigationBarTitle({
       title: '商店bar',
-      success:res=>{
-        console.log("设置bar成功",res)
+      success: res => {
+        console.log("设置bar成功", res)
       },
-      fail:res=>{
+      fail: res => {
         console.log("设置bar失败", res)
       }
     })
   },
   //动态设置置顶栏文字内容,5s内调用多次会返回fail
-  setTopBarText:function(){
-    if (util.isfastclick(5000)){
+  setTopBarText: function () {
+    if (util.isfastclick(5000)) {
       wx.showToast({
         title: '设置置顶栏API 5秒内只能调用一次,请稍后再试!',
-        icon:"none"
+        icon: "none"
       })
       return;
     }
@@ -296,21 +298,21 @@ Page({
       fail: res => {
         console.log("设置topbar失败", res)
       },
-      complete:res=>{
+      complete: res => {
         console.log("设置topbar完成", res)
       }
     })
   },
   //在当前页面显示导航条加载动画
-  showNavigationBarLoading:function(){
+  showNavigationBarLoading: function () {
     wx.showNavigationBarLoading();
   },
   //隐藏导航条加载动画
-  hideNavigationBarLoading:function(){
+  hideNavigationBarLoading: function () {
     wx.hideNavigationBarLoading()
   },
   //
-  setNavigationBarColor:function(){
+  setNavigationBarColor: function () {
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: '#ff0000',
@@ -321,25 +323,25 @@ Page({
     })
   },
   //为 tabBar 某一项的右上角添加文本
-  setTabBarBadge:function(){
+  setTabBarBadge: function () {
     wx.setTabBarBadge({
       index: 0,//tabBar的哪一项，从左边算起
       text: num++ + "",//文本，超过 3 个字符则显示成“…”
-      success:res=>{},
-      fail:res=>{},
-      complete:res=>{}
+      success: res => { },
+      fail: res => { },
+      complete: res => { }
     })
   },
-  removeTabBarBadge:function(){
+  removeTabBarBadge: function () {
     wx.removeTabBarBadge({
       index: 0,//tabbar右上即使没有文本也会回调success
       success: res => { console.log("移除TabBarBadge成功", res) },
-      fail: res => { console.log("移除TabBarBadge失败", res)},
-      complete: res => { console.log("移除TabBarBadge完成", res),num=1}
+      fail: res => { console.log("移除TabBarBadge失败", res) },
+      complete: res => { console.log("移除TabBarBadge完成", res), num = 1 }
     })
   },
   //显示 tabBar 某一项的右上角的红点
-  showTabBarRedDot:function(){
+  showTabBarRedDot: function () {
     wx.showTabBarRedDot({
       index: 0,
       success: res => { },
@@ -347,15 +349,15 @@ Page({
       complete: res => { }
     })
   },
-  hideTabBarRedDot:function(){
+  hideTabBarRedDot: function () {
     wx.hideTabBarRedDot({
       index: 0,
       success: res => { console.log("移除TabBarRedDot成功", res) },
       fail: res => { console.log("移除TabBarRedDot失败", res) },
-      complete: res => { console.log("移除TabBarRedDot完成", res)}
+      complete: res => { console.log("移除TabBarRedDot完成", res) }
     })
   },
-  setTabBarStyle:function(){
+  setTabBarStyle: function () {
     wx.setTabBarStyle({
       color: '',
       selectedColor: '',
@@ -365,7 +367,7 @@ Page({
       fail: function (res) { },
       complete: function (res) { },
     })
-  }, 
+  },
   //动画
   rotateAndScale: function () {
     // 旋转同时放大
@@ -390,7 +392,7 @@ Page({
       animationData: this.animation.export()
     })
   },
-  pageScrollTo:function(){
+  pageScrollTo: function () {
     wx.pageScrollTo({
       scrollTop: 457,
       duration: 3000
@@ -398,9 +400,9 @@ Page({
   },
   getFields: function () {
     wx.createSelectorQuery().select('#btfield').fields({
-      id:true,
+      id: true,
       dataset: true,
-      rect:true,
+      rect: true,
       size: true,
       scrollOffset: true,
       properties: ['scrollX', 'scrollY']
@@ -412,11 +414,11 @@ Page({
       res.scrollTop  // 节点的竖直滚动位置
       res.scrollX    // 节点 scroll-x 属性的当前值
       res.scrollY    // 节点 scroll-y 属性的当前值
-      console.log("节点信息",res)//单位:px
+      console.log("节点信息", res)//单位:px
     }).exec()
   },
   //起用户编辑收货地址原生界面，并在编辑完成后返回用户选择的地址。
-  chooseAddress:function(){
+  chooseAddress: function () {
     wx.chooseAddress({
       success: function (res) {
         console.log(res.userName)
@@ -429,5 +431,242 @@ Page({
         console.log(res.telNumber)
       }
     })
+  },
+  //获取本机支持的SOTER生物认证方式,需真机调试
+  checkIsSupportSoterAuthentication: function () {
+    wx.checkIsSupportSoterAuthentication({
+      success: res => {
+        console.log("获取生物认证方式成功", res)
+      },
+      fail: res => {
+        console.log("获取生物认证方式失败", res);
+      },
+      complete: res => {
+        console.log("获取生物认证方式完成", res);
+      }
+    })
+  },
+  //开始 SOTER 生物认证
+  startSoterAuthentication: function () {
+    wx.startSoterAuthentication({
+      requestAuthModes: ['fingerPrint'],//暂只支持指纹识别
+      challenge: '123456',
+      authContent: '请用指纹解锁',
+      success(res) {
+        console.log("生物认证成功", res);
+      },
+      fail(res) {
+        console.log("生物认证失败", res);
+      },
+      complete(res) {
+        console.log("生物认证完成", res);
+      }
+    })
+  },
+  // 获取设备内是否录入如指纹等生物信息的接口
+  checkIsSoterEnrolledInDevice: function () {
+    wx.checkIsSoterEnrolledInDevice({
+      checkAuthMode: 'fingerPrint',
+      success(res) {
+        console.log("获取生物信息成功", res);
+      },
+      fail(res) {
+        console.log("获取生物信息失败", res);
+      },
+      complete(res) {
+        console.log("获取生物信息完成", res);
+      }
+    })
+  },
+  createCanvasContext: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+    ctx.setFillStyle('red')
+    ctx.fillRect(10, 10, 150, 75)
+    ctx.draw()
+  },
+  createLinearGradient: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    // Create linear gradient
+    const grd = ctx.createLinearGradient(0, 0, 200, 0)
+    grd.addColorStop(0, 'red')
+    grd.addColorStop(1, 'white')
+
+    // Fill with gradient
+    ctx.setFillStyle(grd)
+    ctx.fillRect(10, 10, 150, 80)
+    ctx.draw()
+  },
+  createCircularGradient: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    // Create circular gradient
+    const grd = ctx.createCircularGradient(75, 50, 50)
+    grd.addColorStop(0, 'red')
+    grd.addColorStop(1, 'white')
+
+    // Fill with gradient
+    ctx.setFillStyle(grd)
+    ctx.fillRect(10, 10, 150, 80)
+    ctx.draw()
+  },
+  canvasToTempFilePath: function () {
+    wx.canvasToTempFilePath({
+      x: 100,
+      y: 200,
+      width: 50,
+      height: 50,
+      destWidth: 100,
+      destHeight: 100,
+      canvasId: 'firstCanvas',
+      success: res => {
+        console.log(res.tempFilePath)
+        this.setData({
+          imagehidden: false,
+          ctPath: res.tempFilePath
+        })
+      }
+    })
+
+  },
+  setShadow: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+    ctx.setFillStyle('red')
+    ctx.setShadow(10, 50, 50, 'blue')
+    ctx.fillRect(10, 10, 150, 75)
+    ctx.draw()
+  },
+  arc: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    // Draw coordinates
+    ctx.arc(100, 75, 50, 0, 2 * Math.PI)
+    ctx.setFillStyle('#EEEEEE')
+    ctx.fill()
+
+    ctx.beginPath()
+    ctx.moveTo(40, 75)
+    ctx.lineTo(160, 75)
+    ctx.moveTo(100, 15)
+    ctx.lineTo(100, 135)
+    ctx.setStrokeStyle('#AAAAAA')
+    ctx.stroke()
+
+    ctx.setFontSize(12)
+    ctx.setFillStyle('black')
+    ctx.fillText('0', 165, 78)
+    ctx.fillText('0.5*PI', 83, 145)
+    ctx.fillText('1*PI', 15, 78)
+    ctx.fillText('1.5*PI', 83, 10)
+
+    // Draw points
+    ctx.beginPath()
+    ctx.arc(100, 75, 2, 0, 2 * Math.PI)
+    ctx.setFillStyle('lightgreen')
+    ctx.fill()
+
+    ctx.beginPath()
+    ctx.arc(100, 25, 2, 0, 2 * Math.PI)
+    ctx.setFillStyle('blue')
+    ctx.fill()
+
+    ctx.beginPath()
+    ctx.arc(150, 75, 2, 0, 2 * Math.PI)
+    ctx.setFillStyle('red')
+    ctx.fill()
+
+    // Draw arc
+    ctx.beginPath()
+    ctx.arc(100, 75, 50, 0, 1.5 * Math.PI)
+    ctx.setStrokeStyle('#333333')
+    ctx.stroke()
+
+    ctx.draw()
+  },
+  scale: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    ctx.strokeRect(10, 10, 25, 15)
+    ctx.scale(2, 2)
+    ctx.strokeRect(10, 10, 25, 15)
+    ctx.scale(2, 2)
+    ctx.strokeRect(10, 10, 25, 15)
+
+    ctx.draw()
+  },
+  rotate: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    ctx.strokeRect(100, 10, 150, 100)
+    ctx.rotate(20 * Math.PI / 180)
+    ctx.strokeRect(100, 10, 150, 100)
+    ctx.rotate(20 * Math.PI / 180)
+    ctx.strokeRect(100, 10, 150, 100)
+
+    ctx.draw()
+  },
+  translate: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    ctx.strokeRect(10, 10, 150, 100)
+    ctx.translate(20, 20)
+    ctx.strokeRect(10, 10, 150, 100)
+    ctx.translate(20, 20)
+    ctx.strokeRect(10, 10, 150, 100)
+
+    ctx.draw()
+  },
+  clip: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    wx.downloadFile({
+      url: 'http://is5.mzstatic.com/image/thumb/Purple128/v4/75/3b/90/753b' +
+      '907c-b7fb-5877-215a-759bd73691a4/source/50x50bb.jpg',
+      success: function (res) {
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(50, 50, 25, 0, 2 * Math.PI)
+        ctx.clip()
+        ctx.drawImage(res.tempFilePath, 25, 25)
+        ctx.restore()
+        ctx.draw()
+      }
+    })
+  },
+  start: function (e) {
+    this.setData({
+      hidden: false,
+      x: e.touches[0].x,
+      y: e.touches[0].y
+    })
+  },
+  move: function (e) {
+    this.setData({
+      x: e.touches[0].x,
+      y: e.touches[0].y
+    })
+  },
+  end: function (e) {
+    this.setData({
+      hidden: false
+    })
+  },
+  addColorStop: function () {
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    // Create circular gradient
+    const grd = ctx.createLinearGradient(30, 10, 150, 10)
+    grd.addColorStop(0, 'red')
+    grd.addColorStop(0.16, 'orange')
+    grd.addColorStop(0.33, 'yellow')
+    grd.addColorStop(0.5, 'green')
+    grd.addColorStop(0.66, 'cyan')
+    grd.addColorStop(0.83, 'blue')
+    grd.addColorStop(1, 'purple')
+
+    // Fill with gradient
+    ctx.setFillStyle(grd)
+    ctx.fillRect(10, 10, 150, 80)
+    ctx.draw()
   },
 })
