@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/shop/shop",
     "pages/tabbarone/tabbarone",
+    "pages/shop/shop",
     "pages/main/main",
     "pages/discover/discover",
     "pages/tabbartwo/tabbartwo",
