@@ -650,5 +650,23 @@ Page({
     this.setData({
       hidden: false
     })
-  }
+  },
+  addColorStop:function(){
+    const ctx = wx.createCanvasContext('firstCanvas')
+
+    // Create circular gradient
+    const grd = ctx.createLinearGradient(30, 10, 150, 10)
+    grd.addColorStop(0, 'red')
+    grd.addColorStop(0.16, 'orange')
+    grd.addColorStop(0.33, 'yellow')
+    grd.addColorStop(0.5, 'green')
+    grd.addColorStop(0.66, 'cyan')
+    grd.addColorStop(0.83, 'blue')
+    grd.addColorStop(1, 'purple')
+
+    // Fill with gradient
+    ctx.setFillStyle(grd)
+    ctx.fillRect(10, 10, 150, 80)
+    ctx.draw()
+  },
 })

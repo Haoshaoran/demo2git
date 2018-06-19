@@ -31,6 +31,7 @@
 <button bindtap='createLinearGradient' >createLinearGradient</button>
 <button bindtap='createCircularGradient' >createCircularGradient</button>
 <button bindtap='canvasToTempFilePath' >canvasToTempFilePath</button>
+<button bindtap='addColorStop' >addColorStop</button>
 <button bindtap='setShadow' >setShadow阴影</button>
 <button bindtap='arc' >arc画弧</button>
 <button bindtap='scale' >scale放缩</button>
