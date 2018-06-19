@@ -637,14 +637,14 @@ Page({
   start: function (e) {
     this.setData({
       hidden: false,
-      x: e.touches[0].x,
-      y: e.touches[0].y
+      x: parseInt(e.touches[0].x),
+      y: parseInt(e.touches[0].y)
     })
   },
   move: function (e) {
     this.setData({
-      x: e.touches[0].x,
-      y: e.touches[0].y
+      x: parseInt(e.touches[0].x),
+      y: parseInt(e.touches[0].y)
     })
   },
   end: function (e) {
@@ -671,4 +671,24 @@ Page({
     ctx.draw()
   },
   // 滚你妈的怎么就不能合并
+  clickminiProgram:function(){
+    if (!util.compareVersion(wx.getSystemInfoSync().SDKVersion,'2.0.7')){
+      console.log("低版本")
+      wx.navigateToMiniProgram({
+        appId: 'wx54ed235e12cf97eb',
+        // path: 'pages/index/index?id=123',
+        extraData: {
+          foo: 'bar'
+        },
+        envVersion: 'release',
+        success(res) {
+          // 打开成功
+          console.log("打开思迅购成功")
+        },
+        fail(res){
+          console.log("打开思迅购失败")
+        }
+      })
+    }
+  },
 })

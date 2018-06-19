@@ -39,7 +39,7 @@
 <button bindtap='rotate' >rotate旋转</button>
 <button bindtap='translate' >translate平移</button>
 <button bindtap='clip' >clip裁剪</button>
-<image src='{{ctPath}}' hidden='{{hasPath}}'></image>
+<image src='{{ctPath}}' hidden='{{imagehidden}}'></image>
 <canvas style="width: 99%; height: 200px; border: 1px solid;" canvas-id="firstCanvas"
  bindtouchstart="start"
   bindtouchmove="move"
@@ -47,8 +47,8 @@
   <view hidden="{{hidden}}">
   Coordinates: ({{x}}, {{y}})
 </view>
-<view > 
-<navigator  class='buttonstyle' target="miniProgram" open-type="navigate" app-id="wxeb490c6f9b154ef9" path="" extra-data="" version="develop">打开绑定的小程序</navigator>
+<view bindtap='clickminiProgram' > 
+<navigator  class='buttonstyle' target="miniProgram" open-type="navigate" app-id="wx54ed235e12cf97eb" path="" extra-data="" version="release">打开绑定的小程序</navigator>
 </view>
 
 
