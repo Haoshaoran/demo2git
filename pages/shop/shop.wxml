@@ -24,6 +24,34 @@
 <button bindtap='getFields' id='btfield' >getFields</button>
 <button bindtap='chooseAddress' >chooseAddress</button>
 
+
+<button bindtap='checkIsSupportSoterAuthentication' >取本机支持SOTER生物认证方式</button>
+<button bindtap='startSoterAuthentication' >开始 SOTER 生物认证</button>
+<button bindtap='checkIsSoterEnrolledInDevice' >是否录入如指纹等生物信息</button>
+<button bindtap='createCanvasContext' >createCanvasContext</button>
+<button bindtap='createLinearGradient' >createLinearGradient</button>
+<button bindtap='createCircularGradient' >createCircularGradient</button>
+<button bindtap='canvasToTempFilePath' >canvasToTempFilePath</button>
+<button bindtap='addColorStop' >addColorStop</button>
+<button bindtap='setShadow' >setShadow阴影</button>
+<button bindtap='arc' >arc画弧</button>
+<button bindtap='scale' >scale放缩</button>
+<button bindtap='rotate' >rotate旋转</button>
+<button bindtap='translate' >translate平移</button>
+<button bindtap='clip' >clip裁剪</button>
+<image src='{{ctPath}}' hidden='{{hasPath}}'></image>
+<canvas style="width: 99%; height: 200px; border: 1px solid;" canvas-id="firstCanvas"
+ bindtouchstart="start"
+  bindtouchmove="move"
+  bindtouchend="end" ></canvas>
+  <view hidden="{{hidden}}">
+  Coordinates: ({{x}}, {{y}})
+</view>
+<view > 
+<navigator  class='buttonstyle' target="miniProgram" open-type="navigate" app-id="wxeb490c6f9b154ef9" path="" extra-data="" version="develop">打开绑定的小程序</navigator>
+</view>
+
+
 <!-- <view animation="{{animationData}}" style="background:red;height:100rpx;width:100rpx"></view> -->
 <my-component-dialog
 bind:determineevent="onMyEvent"
