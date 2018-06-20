@@ -2,6 +2,7 @@
 <!-- <text >商店</text> -->
  <button bindtap='getLocationClick'>{{location}}</button>
 <button bindtap='chooseLocationClick'>打开地图</button>
+<button bindtap='checkLoactionList'>查看地点列表</button>
 <button bindtap='showModal'>showModal</button>
 <button bindtap='showoperamenu'>showActionSheet</button>
 <button bindtap='setNavigationBarTitle'>setNavigationBarTitle</button>

@@ -691,4 +691,22 @@ Page({
       })
     }
   },
+  //查看地点列表
+  checkLoactionList:function(){
+    wx.request({
+      url: 'https://api.weixin.qq.com/wxa/getnearbypoilist?',
+      method:'GET',
+      data: {
+        page: '1',
+        page_rows: '20',
+        access_token: wx.getStorageSync('access_token')
+      },
+      success:res=>{
+        console.log("查看地点列表成功",res)
+      },
+      fail:res=>{
+        console.log("查看地点列表失败", res)
+      }
+    })
+  },
 })

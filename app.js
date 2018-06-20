@@ -6,40 +6,60 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     console.log('app onLaunch')
-    // 登录
-    // wx.login({
-    //   success: res => {
+    //获取access_token
+    // const requestTask = wx.request({
+    //   //做登录开发的时候，如果你已经获取到了code，接下来获取session_key的时候。你需要将code传到你自己的服务器，
+    //   // 然后在你自己的服务器请求session_key，而不是在小程序内部直接请求微信的url获取session_key。
+    //   url: 'https://api.weixin.qq.com/cgi-bin/token?',
+    //   data: {
+    //     appid: 'wxa313dd62b383db3b',
+    //     secret: '4085a2bfe6b9c034afc2935706819f32',
+    //     grant_type: 'client_credential'
+    //   },
+    //   method: 'GET',
+    //   success: function (res) {
     //     // debugger;
-    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //     const requestTask=wx.request({
-    //       //做登录开发的时候，如果你已经获取到了code，接下来获取session_key的时候。你需要将code传到你自己的服务器，
-    //       // 然后在你自己的服务器请求session_key，而不是在小程序内部直接请求微信的url获取session_key。
-    //       url: 'https://api.weixin.qq.com/sns/jscode2session',
-    //       data: {
-    //         appid: 'wxa313dd62b383db3b',
-    //         secret: '4085a2bfe6b9c034afc2935706819f32',
-    //         js_code: res.code,
-    //         grant_type: 'authorization_code'
-    //       },
-    //       header: {
-    //         "Content-Type": "application/x-www-form-urlencoded"
-    //       },
-    //       method: 'GET',
-    //       success: function (res) {
-    //         // debugger;
-    //         console.log("返回信息:res=",res)
-    //         wx.setStorageSync("appid", "wxa313dd62b383db3b")
-    //         wx.setStorageSync("sessionkey", res.data.session_key)
-    //       },
-    //       fail: function (res) { },
-    //       complete: function (res) { }
-    //     });
-    //     // requestTask.abort();
-    //   }
+    //     console.log("返回信息:res=", res)
+    //     wx.setStorageSync("access_token", res.data.access_token)
+    //   },
+    //   fail: function (res) { },
+    //   complete: function (res) { }
     // })
-    wx.showShareMenu({
-      withShareTicket: true
+    // wx.showShareMenu({
+    //   withShareTicket: true
+    // })
+    // 登录
+    wx.login({
+      success: res => {
+        // debugger;
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        const requestTask = wx.request({
+          //做登录开发的时候，如果你已经获取到了code，接下来获取session_key的时候。你需要将code传到你自己的服务器，
+          // 然后在你自己的服务器请求session_key，而不是在小程序内部直接请求微信的url获取session_key。
+          url: 'https://api.weixin.qq.com/sns/jscode2session',
+          data: {
+            appid: 'wxa313dd62b383db3b',
+            secret: '4085a2bfe6b9c034afc2935706819f32',
+            js_code: res.code,
+            grant_type: 'authorization_code'
+          },
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          method: 'GET',
+          success: function (res) {
+            // debugger;
+            console.log("返回信息:res=", res)
+            wx.setStorageSync("appid", "wxa313dd62b383db3b")
+            wx.setStorageSync("sessionkey", res.data.session_key)
+          },
+          fail: function (res) { },
+          complete: function (res) { }
+        });
+        // requestTask.abort();
+      }
     })
+
     // 获取用户信息
     // wx.getSetting({
     //   success: res => {
@@ -62,22 +82,22 @@ App({
     //   }
     // })
   },
- 
   globalData: {
     userInfo: null,
-    isfastClicked:false
+    isfastClicked: false
   },
-  onShow : function(e){
-    console.log('app onshow',e);
-    if (e.shareTicket!=null){
+   
+  onShow: function (e) {
+    console.log('app onshow', e);
+    if (e.shareTicket != null) {
       console.log('app onshow.shareTicket', e.shareTicket);
       wx.setStorageSync("shareTicket", e.shareTicket)
     }
   },
-  onHide : function(e){
+  onHide: function (e) {
     console.log('app onhide');
   },
-  onError : function(msg){
-    console.log('app onerror,'+msg);
+  onError: function (msg) {
+    console.log('app onerror,' + msg);
   }
 })
