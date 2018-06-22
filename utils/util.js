@@ -1,4 +1,5 @@
 var Crypto = require('/cryptojs.js').Crypto;
+var md5 = require('/netMD5.js')
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -32,6 +33,10 @@ var gettime=time=>{
   var minute = Math.floor(other / 60);
   var second = Math.floor(other % 60);
   return PrefixInteger(minute, 2) + ":" + PrefixInteger(second,2);
+}
+var getMD5Data=function(data){
+  return Crypto.MD5(data, 'MD5').toUpperCase() ;
+  // return md5.md5(data);2种用其一即可
 }
 var decryptData = function (encryptedData, iv) {
   this.appId = wx.getStorageSync("appid");
@@ -110,5 +115,6 @@ module.exports = {
   downloadFile: downloadFile,
   compareVersion:compareVersion,
   isfastclick: isfastclick,
+  getMD5Data: getMD5Data,
 }
 // exports.formatTime=formatTime

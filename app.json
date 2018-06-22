@@ -1,13 +1,13 @@
 {
   "pages": [
     "pages/shop/shop",
+    "pages/index/index",
     "pages/tabbarone/tabbarone",
     "pages/main/main",
     "pages/discover/discover",
     "pages/tabbartwo/tabbartwo",
     "pages/cart/cart",
     "pages/mine/mine",
-    "pages/index/index",
     "pages/logs/logs",
     "pages/webview/webview",
     "pages/api/downfile/downfile"

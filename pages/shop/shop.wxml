@@ -1,7 +1,16 @@
 <!--pages/shop/shop.wxml-->
 <!-- <text >商店</text> -->
  <button bindtap='getLocationClick'>{{location}}</button>
-<button bindtap='chooseLocationClick'>打开地图</button>
+ <view >
+    <video src="{{src}}" hidden='{{videohidden}}' style='width:100%'></video>
+    <button bindtap="chooseVideo">获取视频</button>
+</view>
+<button bindtap='chooseLocationClick'>打开地图</button>  
+<button bindtap='getNetworkType'>getNetworkType</button>  
+<button bindtap='requestPayment'>requestPayment</button>  
+<button bindtap='openDocument'>打开下载文档</button>  
+<button bindtap='loadfontface'>动态加载字体</button>  
+<button bindtap='yanzhengBtn'>获取手机验证码</button>
 <button bindtap='checkLoactionList'>查看地点列表</button>
 <button bindtap='showModal'>showModal</button>
 <button bindtap='showoperamenu'>showActionSheet</button>

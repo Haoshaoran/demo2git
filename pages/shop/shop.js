@@ -20,7 +20,8 @@ Page({
     key: "d29edb092fbe4eabb27aab5f84d56693",
     animationData: {},
     imagehidden: true,
-    ctPath: ''
+    ctPath: '',
+    videohidden:true,
   },
   getLocationClick: function () {
     this.data.operatetype = 0;
@@ -165,19 +166,25 @@ Page({
   onLoad: function (options) {
     console.log("shop is onload")
     var that = this;
+    // 监听网络状态变化。
+    wx.onNetworkStatusChange(function (res) {
+      console.log(res.isConnected)
+      console.log(res.networkType)
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log('shop is onReady')
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    console.log("shop is onshow")
     var animation = wx.createAnimation({
       duration: 1000,
       timingFunction: 'ease',
@@ -709,4 +716,127 @@ Page({
       }
     })
   },
+  // 获取手机验证码
+  yanzhengBtn: function () {
+    wx.request({
+      url: 'https://www.didu86.com/Clothes-manager-web/codenum',
+      data: {
+        tel: 15972080816,
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data.code;
+        console.log('获取手机验证码成功',result)
+      },
+      fail:function(res){
+        console.log('获取手机验证码失败')
+      }
+    })
+  },
+  // 选取视频
+  chooseVideo:function(){
+    if (!this.data.videohidden){
+      this.setData({
+        videohidden: true
+      })
+      return;
+    }
+    wx.chooseVideo({
+      sourceType: ['album', 'camera'],
+      compressed: true,
+      maxDuration:60,
+      success:res=>{  
+        console.log('选取视频成功',res)
+        this.setData({
+          src:res.tempFilePath,
+          videohidden:false
+        })
+      },
+      fail:res=>{
+        console.log('选取视频失败',res)
+      },
+      complete:res=>{
+        console.log('选取视频完成',res)
+      }
+    })
+
+  },
+  // 动态加载字体
+  loadfontface:function(){
+    wx.loadFontFace({
+      family: 'Bitstream Vera Serif Bold',
+      source: "http://developer.mozilla.org/@api/deki/files/2934/=VeraSeBd.ttf",
+      success: function (res) {
+        console.log('动态加载字体成功',res) //  loaded
+      },
+      fail: function (res) {
+        console.log('动态加载字体失败',res) //  error
+      },
+      complete: function (res) {
+        console.log('动态加载字体完成',res);
+      }
+    });
+  },
+  // 打开下载文档
+  openDocument:function(){
+    wx.downloadFile({
+      url: 'http://128.0.19.12:8080/DZ-LED8.doc',//doc, xls, ppt, pdf, docx, xlsx, pptx(<=10M)
+      success: function (res) {
+        console.log('下载文档成功', res);
+        var filePath = res.tempFilePath
+        wx.openDocument({
+          filePath: filePath,
+          success: function (res) {
+            console.log('打开文档成功',res)
+          },
+          fail: function (res) {
+            console.log('打开文档失败',res)
+          },
+          complete: function (res) {
+            console.log('打开文档完成',res)
+          },
+        })
+      },
+      fail:res=>{
+        console.log('下载文档失败', res);
+      },
+      complete:res=>{
+        console.log('下载文档完成', res);
+      }
+    })
+  },
+  // 获取网络状态
+  getNetworkType:function(){
+    wx.getNetworkType({
+      success: function(res) {
+        console.log('获取网络状态成功',res)
+      },
+      fail:function(res){
+        console.log('获取网络状态失败',res)
+      }
+    })
+  },
+  // 调用微信支付
+  requestPayment:function(){
+    var ts = new Date().getTime+'';
+    var appid = wx.getStorageSync('appid');
+    console.log('appid', appid);
+    var ns ='5K8264ILTKCH16CQ2502SI8ZNMTM67VS';
+    var pk ='prepay_id=wx2018073010242291fcfe0db70013231072';//prepay_id:统一下单接口返回的  
+    var ps = util.getMD5Data('appId='+appid+ '&nonceStr=' + ns + '&package=' + pk + '&signType=MD5' + '&timeStamp=' + ts +'&key=4085a2bfe6b9c034afc2935706819f32');
+    console.log('ps',ps);
+    wx.requestPayment({
+      timeStamp: ts,
+      nonceStr: ns,
+      package: pk,
+      signType: 'MD5',
+      paySign: ps,
+      success: function (res) { console.log('微信支付成功', res)},
+      fail: function (res) { console.log('微信支付失败', res)},
+      complete: function (res) { console.log('微信支付完成', res)},
+    })
+  },
+  
 })
