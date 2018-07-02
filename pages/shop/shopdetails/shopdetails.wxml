@@ -1,0 +1,44 @@
+<!--pages/shop/shopdetails.wxml-->
+<view hidden='{{dialogHidden}}'>
+  <view class='drawer_screen' bindtap='hdialog' />
+  <view  >
+    <image class='imgsytle' animation='{{animationData}}' 
+  src='http://mz.djmall.xmisp.cn/files/product/20161201/148057921620_middle.jpg'></image>
+  </view>
+  <view class='drawer_detail_box' animation='{{animationData}}'>
+    <view class='textcontain'>
+      <text class='textclass'>坚果三漂亮的不想实力派,野蛮性能,腼腆功耗</text>
+      <text>￥1299.00-1599.00</text>
+    </view>
+    <view class='rowline'></view>
+    <text>颜色</text>
+    <view class='color_contain'>
+      <text class='colorstyle'>黑色</text>
+      <text class='colorstyle'>白色</text>
+      <text class='colorstyle'>酒红色</text>
+    </view>
+    <text>容量</text>
+    <view class='color_contain'>
+      <text class='colorstyle'>32GB</text>
+      <text class='colorstyle'>64GB</text>
+      <text class='colorstyle'>128GB</text>
+    </view>
+    <view class='rowline'></view>
+    <text>购买数量</text>
+    <view class='goods'>
+      <!-- 减号 -->
+      <view class="{{minusStatus}}" bindtap="bindMinus">-</view>
+      <!-- 数值 -->
+      <view class='numstyle'>
+        <input type="number" bindchange="bindManual" value="{{num}}" />
+      </view>
+      <!-- 加号 -->
+      <view class="plusstyle" bindtap="bindPlus">+</view>
+    </view>
+
+  </view>
+  <view class='bottomitem' animation='{{animationData}}'>
+    <button style=' color: #000' bindtap='addCar'>加入购物车</button>
+    <button style=' color: #000' bindtap='buyshop'>立即购买</button>
+  </view>
+</view>

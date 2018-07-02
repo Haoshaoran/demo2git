@@ -4,6 +4,8 @@ var amapFile = require("../../libs/amap-wx.js");
 var app = getApp();
 var num = 1;
 var query = wx.createSelectorQuery();
+var systemNum = 0;
+var phoneInfo = null;
 Page({
 
   /**
@@ -21,21 +23,22 @@ Page({
     animationData: {},
     imagehidden: true,
     ctPath: '',
-    videohidden:true,
+    videohidden: true,
+    mimihidden:true
   },
-  getLocationClick: function () {
+  getLocationClick: function() {
     this.data.operatetype = 0;
     this.operatelocation(false, 0);
   },
   //isSetBack 是否为从授权页面返回;operatetype 0获取本地物理地址,1打开地图选择位置
-  operatelocation: function (isSetBack, operatetype) {
+  operatelocation: function(isSetBack, operatetype) {
     var that = this;
     var hasData = wx.getStorageSync("userLocation");
     var storage = wx.getStorageInfoSync();
     console.log("storage", storage);
     wx.getSetting({
       success(res) {
-        if (!res.authSetting['scope.userLocation'] && !isSetBack && hasData) {//授权页面返回还没有授权则不弹出,第一次微信授权拒绝后要求弹出
+        if (!res.authSetting['scope.userLocation'] && !isSetBack && hasData) { //授权页面返回还没有授权则不弹出,第一次微信授权拒绝后要求弹出
           // debugger;
           that.showDialog();
         } else {
@@ -47,13 +50,13 @@ Page({
           }
         }
       },
-      complete: function () {
+      complete: function() {
 
       }
     })
   },
   //获取本地地址并打开
-  getlocationInfo: function (hasData) {
+  getlocationInfo: function(hasData) {
     wx.showLoading({
       title: '加载中',
     });
@@ -61,10 +64,10 @@ Page({
     wx.getLocation({
       // type: "gcj02 ",//可用于wx.openLocation的坐标
       altitude: true,
-      success: function (res) {
+      success: function(res) {
         console.log("获取地址成功", res)
-        let jd = res.longitude;//经度
-        let wd = res.latitude;//纬度
+        let jd = res.longitude; //经度
+        let wd = res.latitude; //纬度
         let longitudes = jd > 0 ? "东经" + Math.abs(jd) : "西经" + Math.abs(jd)
         let latitude = wd > 0 ? "北纬" + Math.abs(wd) : "南纬" + Math.abs(wd)
         that.setData({
@@ -72,21 +75,21 @@ Page({
         })
         that.openlocation(jd, wd);
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("获取地址失败", res)
         that.showToast("获取地址失败" + res, "none");
         if (!hasData) {
           that.showDialog();
         }
       },
-      complete: function (res) {
+      complete: function(res) {
         wx.setStorageSync("userLocation", "1");
         console.log("获取地址完成", res)
         wx.hideLoading()
       },
     })
   },
-  showDialog: function () {
+  showDialog: function() {
     this.setData({
       isHidden: false,
       titleMsg: "请前往设置页打开用户信息授权",
@@ -94,14 +97,12 @@ Page({
       authorTitle: "获取地理位置授权",
     })
   },
-  sureBtn: function () {
+  sureBtn: function() {
     console.log("sureBtn");
     this.setData({
       isHidden: true,
     })
-    var version = wx.getSystemInfoSync().SDKVersion;
-    console.log("version=", version);
-    if (!util.compareVersion(version, "2.0.7")) {
+    if (!util.compareVersion("2.0.7")) {
       console.log("canuse")
       wx.openSetting({
         success: res => {
@@ -112,7 +113,7 @@ Page({
       })
     }
   },
-  onMyEvent: function (e) {
+  onMyEvent: function(e) {
     // console.log("授权设置完毕 :", e)
     this.setData({
       isHidden: true,
@@ -120,7 +121,7 @@ Page({
     this.operatelocation(true, this.data.operatetype);
   },
   //​使用微信内置地图查看位置。wx.openLocation
-  openlocation: function (longitudes, latitude) {
+  openlocation: function(longitudes, latitude) {
     wx.openLocation({
       latitude: latitude,
       longitude: longitudes,
@@ -133,27 +134,31 @@ Page({
     })
 
   },
-  chooseLocationClick: function () {
+  chooseLocationClick: function() {
     this.data.operatetype = 1;
     this.operatelocation(false, 1);
   },
   //  打开地图选择位置。
-  chooselocation: function (hasData) {
+  chooselocation: function(hasData) {
     wx.showLoading({
       title: '加载中',
     });
     let that = this
     wx.chooseLocation({
-      success: function (res) {
+      success: function(res) {
         console.log("选择地图位置成功", res);
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("选择地图位置失败", res);
-        if (!hasData) {
-          that.showDialog();
-        }
+        wx.getSetting({
+          success:res=>{
+            if (!hasData &&!res.authSetting['scope.userLocation']){
+              that.showDialog();
+            }
+          } 
+        })
       },
-      complete: function (res) {
+      complete: function(res) {
         wx.hideLoading();
         wx.setStorageSync("userLocation", "1");
         console.log("选择地图完成", res)
@@ -161,29 +166,43 @@ Page({
     })
   },
   /**
- * 生命周期函数--监听页面加载
- */
-  onLoad: function (options) {
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
     console.log("shop is onload")
     var that = this;
     // 监听网络状态变化。
-    wx.onNetworkStatusChange(function (res) {
+    wx.onNetworkStatusChange(function(res) {
       console.log(res.isConnected)
       console.log(res.networkType)
+    })
+    // 获取设备信息
+    phoneInfo = wx.getSystemInfoSync();
+    if (phoneInfo.system.indexOf('Android') != -1) {
+      systemNum = util.strTonum(phoneInfo.system);
+      console.log('设备信息', phoneInfo, '系统版本号' + systemNum)
+      let a = systemNum.substring(0, systemNum.indexOf('.'))
+      console.log("a", a);
+    }
+    // 必须先初始化(startWifi)才能生效
+    wx.startWifi({
+      success: res => {
+        this.connectedWifi();
+      }
     })
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 生命周期函数--监听页面初次渲染完成//url地址, uri资源
    */
-  onReady: function () {
+  onReady: function() {
     console.log('shop is onReady')
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     console.log("shop is onshow")
     var animation = wx.createAnimation({
       duration: 1000,
@@ -197,7 +216,7 @@ Page({
       animationData: animation.export()
     })
 
-    setTimeout(function () {
+    setTimeout(function() {
       animation.translate(30).step()
       this.setData({
         animationData: animation.export()
@@ -208,10 +227,10 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
-  showToast: function (msg, icon) {
+  showToast: function(msg, icon) {
     wx.showToast({
       title: msg,
       icon: icon,
@@ -221,32 +240,32 @@ Page({
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
   //显示模拟弹窗  
-  showModal: function () {
+  showModal: function() {
     wx.showModal({
       title: 'showModal',
       content: 'this is showModal' + "\n" + 'hello world',
@@ -264,19 +283,19 @@ Page({
     })
   },
   // 显示操作菜单
-  showoperamenu: function () {
+  showoperamenu: function() {
     wx.showActionSheet({
       itemList: ['A', 'B', 'C'],
-      success: function (res) {
+      success: function(res) {
         console.log("showActionsuccess", res)
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("showActionfail", res)
       }
     })
   },
   // 动态设置当前页面的标题。
-  setNavigationBarTitle: function () {
+  setNavigationBarTitle: function() {
     wx.setNavigationBarTitle({
       title: '商店bar',
       success: res => {
@@ -288,7 +307,7 @@ Page({
     })
   },
   //动态设置置顶栏文字内容,5s内调用多次会返回fail
-  setTopBarText: function () {
+  setTopBarText: function() {
     if (util.isfastclick(5000)) {
       wx.showToast({
         title: '设置置顶栏API 5秒内只能调用一次,请稍后再试!',
@@ -311,15 +330,15 @@ Page({
     })
   },
   //在当前页面显示导航条加载动画
-  showNavigationBarLoading: function () {
+  showNavigationBarLoading: function() {
     wx.showNavigationBarLoading();
   },
   //隐藏导航条加载动画
-  hideNavigationBarLoading: function () {
+  hideNavigationBarLoading: function() {
     wx.hideNavigationBarLoading()
   },
   //
-  setNavigationBarColor: function () {
+  setNavigationBarColor: function() {
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: '#ff0000',
@@ -330,60 +349,72 @@ Page({
     })
   },
   //为 tabBar 某一项的右上角添加文本
-  setTabBarBadge: function () {
+  setTabBarBadge: function() {
     wx.setTabBarBadge({
-      index: 0,//tabBar的哪一项，从左边算起
-      text: num++ + "",//文本，超过 3 个字符则显示成“…”
-      success: res => { },
-      fail: res => { },
-      complete: res => { }
+      index: 0, //tabBar的哪一项，从左边算起
+      text: num++ + "", //文本，超过 3 个字符则显示成“…”
+      success: res => {},
+      fail: res => {},
+      complete: res => {}
     })
   },
-  removeTabBarBadge: function () {
+  removeTabBarBadge: function() {
     wx.removeTabBarBadge({
-      index: 0,//tabbar右上即使没有文本也会回调success
-      success: res => { console.log("移除TabBarBadge成功", res) },
-      fail: res => { console.log("移除TabBarBadge失败", res) },
-      complete: res => { console.log("移除TabBarBadge完成", res), num = 1 }
+      index: 0, //tabbar右上即使没有文本也会回调success
+      success: res => {
+        console.log("移除TabBarBadge成功", res)
+      },
+      fail: res => {
+        console.log("移除TabBarBadge失败", res)
+      },
+      complete: res => {
+        console.log("移除TabBarBadge完成", res), num = 1
+      }
     })
   },
   //显示 tabBar 某一项的右上角的红点
-  showTabBarRedDot: function () {
+  showTabBarRedDot: function() {
     wx.showTabBarRedDot({
       index: 0,
-      success: res => { },
-      fail: res => { },
-      complete: res => { }
+      success: res => {},
+      fail: res => {},
+      complete: res => {}
     })
   },
-  hideTabBarRedDot: function () {
+  hideTabBarRedDot: function() {
     wx.hideTabBarRedDot({
       index: 0,
-      success: res => { console.log("移除TabBarRedDot成功", res) },
-      fail: res => { console.log("移除TabBarRedDot失败", res) },
-      complete: res => { console.log("移除TabBarRedDot完成", res) }
+      success: res => {
+        console.log("移除TabBarRedDot成功", res)
+      },
+      fail: res => {
+        console.log("移除TabBarRedDot失败", res)
+      },
+      complete: res => {
+        console.log("移除TabBarRedDot完成", res)
+      }
     })
   },
-  setTabBarStyle: function () {
+  setTabBarStyle: function() {
     wx.setTabBarStyle({
       color: '',
       selectedColor: '',
       backgroundColor: '',
       borderStyle: '',
-      success: function (res) { },
-      fail: function (res) { },
-      complete: function (res) { },
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
     })
   },
   //动画
-  rotateAndScale: function () {
+  rotateAndScale: function() {
     // 旋转同时放大
     this.animation.rotate(45).scale(2, 2).step()
     this.setData({
       animationData: this.animation.export()
     })
   },
-  rotateThenScale: function () {
+  rotateThenScale: function() {
     // 先旋转后放大
     this.animation.rotate(45).step()
     this.animation.scale(2, 2).step()
@@ -391,21 +422,23 @@ Page({
       animationData: this.animation.export()
     })
   },
-  rotateAndScaleThenTranslate: function () {
+  rotateAndScaleThenTranslate: function() {
     // 先旋转同时放大，然后平移
     this.animation.rotate(45).scale(2, 2).step()
-    this.animation.translate(100, 100).step({ duration: 1000 })
+    this.animation.translate(100, 100).step({
+      duration: 1000
+    })
     this.setData({
       animationData: this.animation.export()
     })
   },
-  pageScrollTo: function () {
+  pageScrollTo: function() {
     wx.pageScrollTo({
       scrollTop: 457,
       duration: 3000
     })
   },
-  getFields: function () {
+  getFields: function() {
     wx.createSelectorQuery().select('#btfield').fields({
       id: true,
       dataset: true,
@@ -413,22 +446,22 @@ Page({
       size: true,
       scrollOffset: true,
       properties: ['scrollX', 'scrollY']
-    }, function (res) {
-      res.dataset    // 节点的dataset
-      res.width      // 节点的宽度
-      res.height     // 节点的高度
+    }, function(res) {
+      res.dataset // 节点的dataset
+      res.width // 节点的宽度
+      res.height // 节点的高度
       res.scrollLeft // 节点的水平滚动位置
-      res.scrollTop  // 节点的竖直滚动位置
-      res.scrollX    // 节点 scroll-x 属性的当前值
-      res.scrollY    // 节点 scroll-y 属性的当前值
-      console.log("节点信息", res)//单位:px
+      res.scrollTop // 节点的竖直滚动位置
+      res.scrollX // 节点 scroll-x 属性的当前值
+      res.scrollY // 节点 scroll-y 属性的当前值
+      console.log("节点信息", res) //单位:px
     }).exec()
   },
   //起用户编辑收货地址原生界面，并在编辑完成后返回用户选择的地址。
-  
-  chooseAddress: function () {
+
+  chooseAddress: function() {
     wx.chooseAddress({
-      success: function (res) {
+      success: function(res) {
         console.log(res.userName)
         console.log(res.postalCode)
         console.log(res.provinceName)
@@ -441,7 +474,7 @@ Page({
     })
   },
   //获取本机支持的SOTER生物认证方式,需真机调试
-  checkIsSupportSoterAuthentication: function () {
+  checkIsSupportSoterAuthentication: function() {
     wx.checkIsSupportSoterAuthentication({
       success: res => {
         console.log("获取生物认证方式成功", res)
@@ -455,9 +488,9 @@ Page({
     })
   },
   //开始 SOTER 生物认证
-  startSoterAuthentication: function () {
+  startSoterAuthentication: function() {
     wx.startSoterAuthentication({
-      requestAuthModes: ['fingerPrint'],//暂只支持指纹识别
+      requestAuthModes: ['fingerPrint'], //暂只支持指纹识别
       challenge: '123456',
       authContent: '请用指纹解锁',
       success(res) {
@@ -472,7 +505,7 @@ Page({
     })
   },
   // 获取设备内是否录入如指纹等生物信息的接口
-  checkIsSoterEnrolledInDevice: function () {
+  checkIsSoterEnrolledInDevice: function() {
     wx.checkIsSoterEnrolledInDevice({
       checkAuthMode: 'fingerPrint',
       success(res) {
@@ -486,13 +519,13 @@ Page({
       }
     })
   },
-  createCanvasContext:function(){
+  createCanvasContext: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
     ctx.setFillStyle('red')
     ctx.fillRect(10, 10, 150, 75)
     ctx.draw()
   },
-  createLinearGradient: function () {
+  createLinearGradient: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     // Create linear gradient
@@ -505,7 +538,7 @@ Page({
     ctx.fillRect(10, 10, 150, 80)
     ctx.draw()
   },
-  createCircularGradient: function () {
+  createCircularGradient: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     // Create circular gradient
@@ -518,7 +551,7 @@ Page({
     ctx.fillRect(10, 10, 150, 80)
     ctx.draw()
   },
-  canvasToTempFilePath: function () {
+  canvasToTempFilePath: function() {
     wx.canvasToTempFilePath({
       x: 100,
       y: 200,
@@ -527,24 +560,24 @@ Page({
       destWidth: 100,
       destHeight: 100,
       canvasId: 'firstCanvas',
-      success:res=> {
+      success: res => {
         console.log(res.tempFilePath)
         this.setData({
-          imagehidden:false,
+          imagehidden: false,
           ctPath: res.tempFilePath
         })
       }
     })
 
   },
-  setShadow: function () {
+  setShadow: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
     ctx.setFillStyle('red')
     ctx.setShadow(10, 50, 50, 'blue')
     ctx.fillRect(10, 10, 150, 75)
     ctx.draw()
   },
-  arc: function () {
+  arc: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     // Draw coordinates
@@ -591,7 +624,7 @@ Page({
 
     ctx.draw()
   },
-  scale: function () {
+  scale: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     ctx.strokeRect(10, 10, 25, 15)
@@ -602,7 +635,7 @@ Page({
 
     ctx.draw()
   },
-  rotate: function () {
+  rotate: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     ctx.strokeRect(100, 10, 150, 100)
@@ -613,7 +646,7 @@ Page({
 
     ctx.draw()
   },
-  translate: function () {
+  translate: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     ctx.strokeRect(10, 10, 150, 100)
@@ -624,13 +657,13 @@ Page({
 
     ctx.draw()
   },
-  clip: function () {
+  clip: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     wx.downloadFile({
-      url: 'http://is5.mzstatic.com/image/thumb/Purple128/v4/75/3b/90/753b'+
-      '907c-b7fb-5877-215a-759bd73691a4/source/50x50bb.jpg',
-      success: function (res) {
+      url: 'http://is5.mzstatic.com/image/thumb/Purple128/v4/75/3b/90/753b' +
+        '907c-b7fb-5877-215a-759bd73691a4/source/50x50bb.jpg',
+      success: function(res) {
         ctx.save()
         ctx.beginPath()
         ctx.arc(50, 50, 25, 0, 2 * Math.PI)
@@ -641,25 +674,26 @@ Page({
       }
     })
   },
-  start: function (e) {
+  start: function(e) {
     this.setData({
       hidden: false,
+      mimihidden:false,
       x: parseInt(e.touches[0].x),
       y: parseInt(e.touches[0].y)
     })
   },
-  move: function (e) {
+  move: function(e) {
     this.setData({
       x: parseInt(e.touches[0].x),
       y: parseInt(e.touches[0].y)
     })
   },
-  end: function (e) {
+  end: function(e) {
     this.setData({
       hidden: false
     })
   },
-  addColorStop:function(){
+  addColorStop: function() {
     const ctx = wx.createCanvasContext('firstCanvas')
 
     // Create circular gradient
@@ -677,9 +711,8 @@ Page({
     ctx.fillRect(10, 10, 150, 80)
     ctx.draw()
   },
-  // 滚你妈的怎么就不能合并
-  clickminiProgram:function(){
-    if (!util.compareVersion(wx.getSystemInfoSync().SDKVersion,'2.0.7')){
+  clickminiProgram: function() {
+    if (!util.compareVersion('2.0.7')) {
       console.log("低版本")
       wx.navigateToMiniProgram({
         appId: 'wx54ed235e12cf97eb',
@@ -692,52 +725,52 @@ Page({
           // 打开成功
           console.log("打开思迅购成功")
         },
-        fail(res){
+        fail(res) {
           console.log("打开思迅购失败")
         }
       })
     }
   },
   //查看地点列表
-  checkLoactionList:function(){
+  checkLoactionList: function() {
     wx.request({
       url: 'https://api.weixin.qq.com/wxa/getnearbypoilist?',
-      method:'GET',
+      method: 'GET',
       data: {
         page: '1',
         page_rows: '20',
         access_token: wx.getStorageSync('access_token')
       },
-      success:res=>{
-        console.log("查看地点列表成功",res)
+      success: res => {
+        console.log("查看地点列表成功", res)
       },
-      fail:res=>{
+      fail: res => {
         console.log("查看地点列表失败", res)
       }
     })
   },
   // 获取手机验证码
-  yanzhengBtn: function () {
+  yanzhengBtn: function() {
     wx.request({
-      url: 'https://www.didu86.com/Clothes-manager-web/codenum',
+      url: 'url', //https://www.didu86.com/Clothes-manager-web/codenum
       data: {
         tel: 15972080816,
       },
       header: {
         'content-type': 'application/json'
       },
-      success: function (res) {
+      success: function(res) {
         var result = res.data.code;
-        console.log('获取手机验证码成功',result)
+        console.log('获取手机验证码成功', result)
       },
-      fail:function(res){
+      fail: function(res) {
         console.log('获取手机验证码失败')
       }
     })
   },
   // 选取视频
-  chooseVideo:function(){
-    if (!this.data.videohidden){
+  chooseVideo: function() {
+    if (!this.data.videohidden) {
       this.setData({
         videohidden: true
       })
@@ -746,97 +779,260 @@ Page({
     wx.chooseVideo({
       sourceType: ['album', 'camera'],
       compressed: true,
-      maxDuration:60,
-      success:res=>{  
-        console.log('选取视频成功',res)
+      maxDuration: 60,
+      success: res => {
+        console.log('选取视频成功', res)
         this.setData({
-          src:res.tempFilePath,
-          videohidden:false
+          src: res.tempFilePath,
+          videohidden: false
         })
       },
-      fail:res=>{
-        console.log('选取视频失败',res)
+      fail: res => {
+        console.log('选取视频失败', res)
       },
-      complete:res=>{
-        console.log('选取视频完成',res)
+      complete: res => {
+        console.log('选取视频完成', res)
       }
     })
 
   },
   // 动态加载字体
-  loadfontface:function(){
+  loadfontface: function() {
     wx.loadFontFace({
       family: 'Bitstream Vera Serif Bold',
       source: "http://developer.mozilla.org/@api/deki/files/2934/=VeraSeBd.ttf",
-      success: function (res) {
-        console.log('动态加载字体成功',res) //  loaded
+      success: function(res) {
+        console.log('动态加载字体成功', res) //  loaded
       },
-      fail: function (res) {
-        console.log('动态加载字体失败',res) //  error
+      fail: function(res) {
+        console.log('动态加载字体失败', res) //  error
       },
-      complete: function (res) {
-        console.log('动态加载字体完成',res);
+      complete: function(res) {
+        console.log('动态加载字体完成', res);
       }
     });
   },
   // 打开下载文档
-  openDocument:function(){
+  openDocument: function() {
     wx.downloadFile({
-      url: 'http://128.0.19.12:8080/DZ-LED8.doc',//doc, xls, ppt, pdf, docx, xlsx, pptx(<=10M)
-      success: function (res) {
+      url: 'http://128.0.19.12:8080/DZ-LED8.doc', //doc, xls, ppt, pdf, docx, xlsx, pptx(<=10M)
+      success: function(res) {
         console.log('下载文档成功', res);
         var filePath = res.tempFilePath
         wx.openDocument({
           filePath: filePath,
-          success: function (res) {
-            console.log('打开文档成功',res)
+          success: function(res) {
+            console.log('打开文档成功', res)
           },
-          fail: function (res) {
-            console.log('打开文档失败',res)
+          fail: function(res) {
+            console.log('打开文档失败', res)
           },
-          complete: function (res) {
-            console.log('打开文档完成',res)
+          complete: function(res) {
+            console.log('打开文档完成', res)
           },
         })
       },
-      fail:res=>{
+      fail: res => {
         console.log('下载文档失败', res);
       },
-      complete:res=>{
+      complete: res => {
         console.log('下载文档完成', res);
       }
     })
   },
   // 获取网络状态
-  getNetworkType:function(){
+  getNetworkType: function() {
     wx.getNetworkType({
       success: function(res) {
-        console.log('获取网络状态成功',res)
+        console.log('获取网络状态成功', res)
       },
-      fail:function(res){
-        console.log('获取网络状态失败',res)
+      fail: function(res) {
+        console.log('获取网络状态失败', res)
       }
     })
   },
   // 调用微信支付
-  requestPayment:function(){
-    var ts = new Date().getTime+'';
+  requestPayment: function() {
+    var ts = new Date().getTime + '';
     var appid = wx.getStorageSync('appid');
     console.log('appid', appid);
-    var ns ='5K8264ILTKCH16CQ2502SI8ZNMTM67VS';
-    var pk ='prepay_id=wx2018073010242291fcfe0db70013231072';//prepay_id:统一下单接口返回的  
-    var ps = util.getMD5Data('appId='+appid+ '&nonceStr=' + ns + '&package=' + pk + '&signType=MD5' + '&timeStamp=' + ts +'&key=4085a2bfe6b9c034afc2935706819f32');
-    console.log('ps',ps);
+    var ns = '5K8264ILTKCH16CQ2502SI8ZNMTM67VS';
+    var pk = 'prepay_id=wx2018073010242291fcfe0db70013231072'; //prepay_id:统一下单接口返回的  
+    var ps = util.getMD5Data('appId=' + appid + '&nonceStr=' + ns + '&package=' + pk + '&signType=MD5' + '&timeStamp=' + ts + '&key=4085a2bfe6b9c034afc2935706819f32');
+    console.log('ps', ps);
     wx.requestPayment({
       timeStamp: ts,
       nonceStr: ns,
       package: pk,
       signType: 'MD5',
       paySign: ps,
-      success: function (res) { console.log('微信支付成功', res)},
-      fail: function (res) { console.log('微信支付失败', res)},
-      complete: function (res) { console.log('微信支付完成', res)},
+      success: function(res) {
+        console.log('微信支付成功', res)
+      },
+      fail: function(res) {
+        console.log('微信支付失败', res)
+      },
+      complete: function(res) {
+        console.log('微信支付完成', res)
+      },
     })
   },
-  
+  // canvas区域隐含的像素数据
+  canvasGetImageData: function() {
+    wx.canvasGetImageData({
+      canvasId: 'firstCanvas',
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      success: function(res) {
+        console.log('成功,像素数据:', res)
+      },
+      fail: function(res) {
+        console.log('失败,像素数据:', res)
+      },
+      complete: function(res) {
+        console.log('完成,像素数据:', res)
+      },
+    })
+  },
+  // 蓝牙
+  openbluetooth: function() {
+    wx.openBluetoothAdapter({
+      success: function(res) {
+        console.log('打开蓝牙成功', res)
+      },
+      fail: function(res) {
+        console.log('打开蓝牙失败', res)
+      },
+      complete: function(res) {
+        console.log('打开蓝牙完成', res)
+      },
+    })
+    wx.getBluetoothAdapterState({
+      success: function(res) {
+        console.log('获取蓝牙状态成功', res)
+      },
+    })
+    wx.onBluetoothAdapterStateChange(function(res) {
+      console.log('监听状态变化', res)
+    })
+    //   stop 方法停止搜索
+    wx.startBluetoothDevicesDiscovery({
+      success: function(res) {
+        wx.getBluetoothDevices({
+          success: function(res) {
+            console.log('获取周围蓝牙设备成功', res)
+            wx.stopBluetoothDevicesDiscovery({
+              success: function(res) {
+                console.log('成功停止蓝牙搜索', res)
+              },
+              complete: res => {
+                wx.closeBluetoothAdapter({
+                  success: function(res) {
+                    console.log('成功关闭蓝牙', res)
+                  },
+                })
+              },
+            })
+          },
+        })
+      },
+    })
+  },
+  // wifi
+  startWifi: function() {
+    // 步骤:1.startWifi;2.getWifiList;3.onGetWifiList;4.connectWifi;5.onWifiConnected  ----android
+    // 步骤:1.startWifi;2.getWifiList;3.onGetWifiList;4.setWifiList;5.onWifiConnectted ----iOS
+    let system = phoneInfo.system;
+    var that = this;
+    wx.startWifi({
+      success: function(res) {
+        console.log('打开wifi成功', res)
+        wx.getWifiList({
+          success: function(res) {
+            console.log('初始化获取wifi列表成功', res)
+          },
+          fail: function(res) {
+            console.log('初始化获取wifi列表失败', res)
+          },
+          complete: function(res) {
+            console.log('初始化获取wifi列表完成', res)
+          },
+        })
+        wx.onGetWifiList(function(res) {
+          if (res.wifiList.length > 0) {
+            let version = util.strTonum(system)
+            let a = version.substring(0, version.indexOf('.'))
+            console.log("a", a);
+            if (system.indexOf('Android') != -1 || system.indexOf('android') != -1 ||
+              (system.indexOf('iOS') != -1 && parseInt(a) > 10)) {
+              console.log("android系统版本:", system)
+              console.log("wifi:", res)
+              wx.connectWifi({
+                SSID: res.wifiList[1].SSID,
+                BSSID: res.wifiList[1].BSSID,
+                password: 'tdls365comcn',
+                success: function(res) {
+                  console.log('连接wifi列表成功', res)
+                  that.connectedWifi();
+                },
+                fail: function(res) {
+                  console.log('连接wifi列表失败', res)
+                },
+                complete: function(res) {
+                  console.log('连接wifi列表完成', res)
+                },
+              })
+              //android系统的
+            } else if (system.indexOf('iOS') != -1) {
+              console.log("ios系统版本:", system)
+              wx.setWifiList({
+                wifiList: [{
+                  SSID: res.wifiList[0].SSID,
+                  BSSID: res.wifiList[0].BSSID,
+                  password: '123456'
+                }],
+                success: function(res) {
+                  console.log('连接wifi列表成功', res)
+                },
+                fail: function(res) {
+                  console.log('连接wifi列表失败', res)
+                },
+                complete: function(res) {
+                  console.log('连接wifi列表完成', res)
+                },
+              })
+            }
+          }
+        })
+      },
+      fail: function(res) {
+        console.log('打开wifi失败', res)
+      },
+      complete: function(res) {
+        console.log('打开wifi完成', res)
+      },
+    })
+  },
+  // 连接上wifi之后获取wifi信息并监听
+  connectedWifi: function() {
+    wx.getConnectedWifi({
+      success: function(res) {
+        console.log('获取连接的wifi信息成功', res)
+      },
+      fail: function(res) {
+        console.log('获取连接的wifi信息失败', res)
+      },
+      complete: function(res) {
+        console.log('获取连接的wifi信息完成', res)
+      },
+    })
+    wx.onWifiConnected(function(res) {
+      console.log('当前连接的wifi状态:', res);
+    })
+  },
+  contact:function(res){
+    console.log("客服消息回调",res);
+  }
 })

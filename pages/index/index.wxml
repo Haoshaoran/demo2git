@@ -7,21 +7,21 @@
 <wxs src="../../utils/util.wxs" module="util"/>
 <view class="section">
    <view class="section__title">movable-view区域小于movable-area</view>
-  <movable-area style="height: 200px; width: 200px; background: red;">
-    <movable-view style="height: 50px; width: 50px; background: blue;" x="{{x}}" y="{{y}}" direction="all">
+  <movable-area style="height: 200rpx; width: 200rpx; background: red;">
+    <movable-view style="height: 50rpx; width: 50rpx; background: blue;" x="{{x}}" y="{{y}}" direction="all">
     </movable-view>
   </movable-area>
   <view class="btn-area">
     <button size="mini" bindtap="tap">click me to move to (30px, 30px)</button>
   </view> 
   <view class="section__title">movable-view区域大于movable-area</view>
-  <movable-area style="height: 100px; width: 100px; background: red;  margin: 100rpx;">
-    <movable-view style="height: 200px; width: 200px; background: blue;" direction="all" out-of-bounds="{{true}}" >
+  <movable-area style="height: 100rpx; width: 100rpx; background: red;  margin: 100rpx;">
+    <movable-view style="height: 200rpx; width: 200rpx; background: blue;" direction="all" out-of-bounds="{{true}}" >
     </movable-view>
   </movable-area>
    <view class="section__title">可放缩</view>
-  <movable-area style="height: 200px; width: 200px; background: red;" scale-area>
-    <movable-view style="height: 50px; width: 50px; background: blue;" direction="all" bindchange="onChange" bindscale="onScale" scale scale-min="0.5" scale-max="4" scale-value="2">
+  <movable-area style="height: 200rpx; width: 200rpx; background: red;" scale-area>
+    <movable-view style="height: 50rpx; width: 50rpx; background: blue;" direction="all" bindchange="onChange" bindscale="onScale" scale scale-min="0.5" scale-max="4" scale-value="2">
     </movable-view>
   </movable-area> 
 </view>

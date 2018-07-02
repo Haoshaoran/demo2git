@@ -1,1 +1,39 @@
 <!--pages/discover/discover.wxml-->
+<view >
+  <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}" wx:key="this">
+      <swiper-item>
+        <image src="{{item}}" data-src="{{item}}" bindtap="previewImage"></image>
+      </swiper-item>
+    </block>
+  </swiper>
+  <scroll-view scroll-y="true">
+    <view class="detail">
+      <text class="title">LANCOME兰蔻小黑瓶精华肌底液</text>
+      <text class="price">￥500</text>
+    </view>
+    <view class="separate"></view>
+    <!-- sku选择 -->
+    <text bindtap="toggleDialog">请选择购买数量</text>
+    <view class="separate"></view>
+    <text>商品评价</text>
+    <text class="text-remark">东西还可以，好评~</text>
+    <view class="separate"></view>
+    <text>商品详情</text>
+    <block wx:for-items="{{detailImg}}" wx:key="name">
+      <image class="image_detail" src="{{item}}" />
+    </block>
+    <view class="temp"></view>
+  </scroll-view>
+  <!-- 底部悬浮栏 -->
+  <view class="detail-nav" >
+    <image bindtap="toCar" src="../../images/icon_component.png" />
+    <view class="line_nav"></view>
+    <image bindtap="addLike" src="{{isLike?'../../images/icon_API.png':'../../images/icon_API_HL.png'}}" />
+    <button class="button-green" bindtap="tocar" formType="submit">商品详情</button>
+    <button class="button-red" bindtap="immeBuy" formType="submit">立即购买</button>
+  </view>
+</view>
+
+<my-component-dialog-shopdetail bind:addCarEvent="addcar" bind:buyshopEvent="buyshop" bind:hideDialogEvent="hiddenDialog" dialog-hidden='{{isHidden}}' animation-data="{{animationdt}}"
+ />

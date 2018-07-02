@@ -1,10 +1,10 @@
 {
   "pages": [
     "pages/shop/shop",
-    "pages/index/index",
     "pages/tabbarone/tabbarone",
-    "pages/main/main",
     "pages/discover/discover",
+    "pages/index/index",
+    "pages/main/main",
     "pages/tabbartwo/tabbartwo",
     "pages/cart/cart",
     "pages/mine/mine",

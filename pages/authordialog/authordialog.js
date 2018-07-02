@@ -47,7 +47,7 @@ Component({
     },
     canUse:{
       type:Boolean,
-      value: util.compareVersion(wx.getSystemInfoSync().SDKVersion,'2.0.7')
+      value: util.compareVersion('2.0.7')
     }
   },
   data: {

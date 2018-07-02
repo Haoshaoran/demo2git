@@ -71,8 +71,9 @@ var decryptData = function (encryptedData, iv) {
 
   return decryptResult
 }
-//版本比较v1:当前版本,v2:最低版本 返回true当前功能不可用,返回false可用
-var compareVersion=function(v1, v2) {
+// v2:最低可用版本号,返回true当前功能不可用,返回false可用 sdk版本比较
+var compareVersion=function(v2) {
+  var v1=wx.getSystemInfoSync().SDKVersion;
   v1 = v1.split('.')
   v2 = v2.split('.')
   var len = Math.max(v1.length, v2.length)
@@ -107,6 +108,10 @@ var isfastclick=function(time){
   lasttime=curenttime;
   return false
 }
+// 从字符串中提取数字
+var strTonum=function(str){
+  return str.replace(/[^0-9,.]/ig, "");
+}
 // 开放接口
 module.exports = {
   formatTime: formatTime,
@@ -116,5 +121,6 @@ module.exports = {
   compareVersion:compareVersion,
   isfastclick: isfastclick,
   getMD5Data: getMD5Data,
+  strTonum: strTonum,
 }
 // exports.formatTime=formatTime

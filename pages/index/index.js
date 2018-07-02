@@ -118,6 +118,7 @@ Page({
   bindGetUserInfo: function(e) {
     // debugger;
     console.log(e);
+    if (typeof e.detail.userInfo=='undefined')return;
     app.globalData.userInfo = e.detail.userInfo;
     this.setData({
       userInfo: e.detail.userInfo,

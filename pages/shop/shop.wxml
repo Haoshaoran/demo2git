@@ -5,7 +5,11 @@
     <video src="{{src}}" hidden='{{videohidden}}' style='width:100%'></video>
     <button bindtap="chooseVideo">获取视频</button>
 </view>
-<button bindtap='chooseLocationClick'>打开地图</button>  
+<button bindtap='chooseLocationClick'>打开地图</button>
+<button open-type='contact' bindcontact="contact">客服会话</button>
+<button bindtap='openbluetooth'>openbluetooth</button>
+<button bindtap='startWifi'>startWifi</button>
+<button bindtap='canvasGetImageData'>canvasGetImageData</button>
 <button bindtap='getNetworkType'>getNetworkType</button>  
 <button bindtap='requestPayment'>requestPayment</button>  
 <button bindtap='openDocument'>打开下载文档</button>  
@@ -48,9 +52,9 @@
 <button bindtap='scale' >scale放缩</button>
 <button bindtap='rotate' >rotate旋转</button>
 <button bindtap='translate' >translate平移</button>
-<button bindtap='clip' >clip裁剪</button>
+<button bindtap='clip'>clip裁剪</button>
 <image src='{{ctPath}}' hidden='{{imagehidden}}'></image>
-<canvas style="width: 99%; height: 200px; border: 1px solid;" canvas-id="firstCanvas"
+<canvas style="width: 99%; height: 200rpx; border: 1rpx solid;" canvas-id="firstCanvas"
  bindtouchstart="start"
   bindtouchmove="move"
   bindtouchend="end" ></canvas>
@@ -72,5 +76,6 @@ author-title="{{authorTitle}}"
 sure-msg="{{sureMsg}}"
 bind:openevent="sureBtn"
 /> 
+
 
 

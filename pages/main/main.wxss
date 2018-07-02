@@ -4,27 +4,27 @@
   background:#fff;
 }
 .page-body-form-value{
-  font-size: 14px;
+  font-size: 14rpx;
   color:darkturquoise;
   font-weight: bold;
-  padding-left: 15px;
-  border: 1px solid rgb(72, 165, 131);
-  border-radius: 4px;
-  height: 30px;
-  line-height: 30px;
+  padding-left: 15rpx;
+  border: 1rpx solid rgb(72, 165, 131);
+  border-radius: 4rpx;
+  height: 30rpx;
+  line-height: 30rpx;
 }
 
 .page-body-form-key{
-  font-size:14px;
-  padding: 10px;
-  margin-top:15px;
+  font-size:14rpx;
+  padding: 10rpx;
+  margin-top:15rpx;
   font-family: "Microsoft Yahei";
   font-weight: bold;
-  height: 30px;
-  line-height: 30px;
+  height: 30rpx;
+  line-height: 30rpx;
 }
 
 .page-body-button{
-  margin-top:20px;
+  margin-top:20rpx;
   line-height: 2;
 }

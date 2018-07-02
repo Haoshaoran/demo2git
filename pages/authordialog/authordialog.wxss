@@ -18,26 +18,26 @@
   left: 0;
   z-index: 1001;
   background: #fafafa;
-  margin: -150px 12% 0 12%;
-  border-radius: 3px;
+  margin: -150rpx 12% 0 12%;
+  border-radius: 3rpx;
 }
 .drawer_title {
-  padding: 15px;
+  padding: 15rpx;
   text-align: center;
   background-color: gazure;
 }
 .drawer_content {
-  height: 130px;
+  height: 130rpx;
   overflow-y: scroll;
   /*超出父盒子高度可滚动*/
 }
 .title {
-  height: 30px;
-  line-height: 30px;
+  height: 30rpx;
+  line-height: 30rpx;
   width: 160rpx;
   text-align: center;
   display: inline-block;
-  font: 300 28rpx/30px "microsoft yahei";
+  font: 300 28rpx/30rpx "microsoft yahei";
 }
 .text {
   color: black;
@@ -53,39 +53,39 @@
 }
 .btn {
   width: 100%;
-  padding: 10px;
+  padding: 10rpx;
   text-align: center;
   color: red;
 }
 .btn:active {
   width: 100%;
-  padding: 10px;
+  padding: 10rpx;
   text-align: center;
   color: red;
   background-color: gray;
 }
 .btnSure {
   width: 100%;
-  padding: 10px;
+  padding: 10rpx;
   background-color: gainsboro;
   text-align: center;
 }
 .titleMsg {
-  font: 200 35rpx/30px;
+  font: 200 35rpx/30rpx;
   text-align: center;
-  margin-top: 45px;
+  margin-top: 45rpx;
   display: block;
 }
 .input_base {
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 3rpx;
+  padding-bottom: 3rpx;
   max-block-size: 10;
   display: block;
   background-color: white;
-  margin-top: 45px;
+  margin-top: 45rpx;
   border: 2rpx solid #ccc;
   padding-left: 20rpx;
   margin-right: 10%;
-  border-radius: 3px;
+  border-radius: 3rpx;
   margin-left: 10%;
 }
