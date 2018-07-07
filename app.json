@@ -1,29 +1,31 @@
 {
   "pages": [
     "pages/shop/shop",
+    "pages/newtabbar/newtabbar",
+    "pages/cart/cart",
+    "pages/main/main",
     "pages/tabbarone/tabbarone",
     "pages/discover/discover",
     "pages/index/index",
-    "pages/main/main",
     "pages/tabbartwo/tabbartwo",
-    "pages/cart/cart",
     "pages/mine/mine",
     "pages/logs/logs",
     "pages/webview/webview",
     "pages/api/downfile/downfile"
+    
   ],
   "window": {
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "abc",
-    "backgroundColor": "#234567",
-    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "#ffffff",
+    "navigationBarTitleText": "wodetest",
+    "navigationBarBackgroundColor": "#AB956D",
+    "backgroundColor": "#eeeeee",
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "color": "#234567",
-    "selectedColor": "#4e8cff",
-    "borderStyle": "black",
+    "color": "#b7b7b7",
+    "selectedColor": "#AB956D",
+    "borderStyle": "#f5f5f5",
+    "backgroundColor": "#f5f5f5",
     "list": [
       {
         "pagePath": "pages/main/main",

@@ -110,7 +110,80 @@ App({
   },
   globalData: {
     userInfo: null,
-    isfastClicked: false
+    isfastClicked: false,
+    tabBar: {
+      "color": "#9E9E9E",
+      "selectedColor": "#f00",
+      "backgroundColor": "#fff",
+      "borderStyle": "#ccc",
+      "list": [
+        {
+          "pagePath": "pages/newtabbar/newtabbar",
+          "text": "首页",
+          "iconPath": "../../images/icon_API.png",
+          "selectedIconPath": "../../images/icon_API_HL.png",
+          "clas": "menu-item",
+          "selectedColor": "#4EDF80",
+          "active": true
+        },
+        {
+          "pagePath": "pages/index/index",
+          "text": "商店",
+          "iconPath": "../../images/icon_component.png",
+          "selectedIconPath": "../../images/icon_component_HL.png",
+          "clas": "menu-item",
+          "selectedColor": "#4EDF80",
+          "active": false
+        },
+        {
+          "pagePath": "pages/logs/logs",
+          "text": "发现",
+          "iconPath": "../../images/icon_component.png",
+          "selectedIconPath": "../../images/icon_component_HL.png",
+          "clas": "menu-item",
+          "selectedColor": "#4EDF80",
+          "active": false
+        }
+      ],
+      "position": "bottom"
+    },
+    tabBar2: {
+      "color": "#9E9E9E",
+      "selectedColor": "#f00",
+      "backgroundColor": "#fff",
+      "borderStyle": "#ccc",
+      "list": [
+        {
+          "pagePath": "pages/newtabbar/newtabbar",
+          "text": "首页",
+          "iconPath": "../../images/icon_API.png",
+          "selectedIconPath": "../../images/icon_API_HL.png",
+           "clas": "menu-item",
+        },
+        {
+          "pagePath": "pages/index/index",
+          "text": "商店",
+          "iconPath": "../../images/icon_component.png",
+          "selectedIconPath": "../../images/icon_component_HL.png"
+        },
+        {
+          "pagePath": "pages/logs/logs",
+          "text": "发现",
+          "iconPath": "../../images/icon_component.png",
+          "selectedIconPath": "../../images/icon_component_HL.png"
+        },
+        {
+          "pagePath": "pages/tabbarone/tabbarone",
+          "text": "购物车",
+          "iconPath": "../../images/icon_component.png",
+          "selectedIconPath": "../../images/icon_component_HL.png",
+          "clas": "menu-item",
+          "selectedColor": "#4EDF80",
+          "active": false
+        }
+      ],
+      "position": "bottom"
+    }
   },
    
   onShow: function (e) {
@@ -125,5 +198,39 @@ App({
   },
   onError: function (msg) {
     console.log('app onerror,' + msg);
-  }
+  },
+  //第一种状态的底部
+  editTabBar: function () {
+    var _curPageArr = getCurrentPages();
+    var _curPage = _curPageArr[_curPageArr.length - 1];
+    // debugger;
+    var _pagePath = _curPage.route;
+    var tabBar = this.globalData.tabBar;
+    console.log('tabbar', tabBar);
+    for (var i = 0; i < tabBar.list.length; i++) {
+      tabBar.list[i].active = false;
+      if (tabBar.list[i].pagePath == _pagePath) {
+        tabBar.list[i].active = true;//根据页面地址设置当前页面状态  
+      }
+    }
+    _curPage.setData({
+      tabBar: tabBar
+    });
+  },
+  //第二种状态的底部
+  editTabBar2: function () {
+    var _curPageArr = getCurrentPages();
+    var _curPage = _curPageArr[_curPageArr.length - 1];
+    var _pagePath = _curPage.route;
+    var tabBar = this.globalData.tabBar2;
+    for (var i = 0; i < tabBar.list.length; i++) {
+      tabBar.list[i].active = false;
+      if (tabBar.list[i].pagePath == _pagePath) {
+        tabBar.list[i].active = true;//根据页面地址设置当前页面状态  
+      }
+    }
+    _curPage.setData({
+      tabBar: tabBar
+    });
+  },
 })

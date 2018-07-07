@@ -5,6 +5,15 @@
     <video src="{{src}}" hidden='{{videohidden}}' style='width:100%'></video>
     <button bindtap="chooseVideo">获取视频</button>
 </view>
+<view class='userinfo'>
+  <input placeholder='请输入手机号' bindinput='phoneInput' style='width:60%;height:100%; border: 1px solid #ddd;  box-sizing: border-box;'></input>
+  <button bindtap='yanzhengBtn' style='width:40%'>获取验证码</button>
+</view>
+<view class='userinfo'>
+  <input placeholder='请输入验证码' bindinput='yanZhengInput' style='height:100%; width:60%;border: 1px solid #ddd;  box-sizing: border-box;'></input>
+  <button style='width:20%'>{{time}}</button>
+  <button bindtap='btnsure' style='width:20%'>确定</button>
+</view>
 <button bindtap='chooseLocationClick'>打开地图</button>
 <button open-type='contact' bindcontact="contact">客服会话</button>
 <button bindtap='openbluetooth'>openbluetooth</button>

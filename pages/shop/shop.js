@@ -6,6 +6,9 @@ var num = 1;
 var query = wx.createSelectorQuery();
 var systemNum = 0;
 var phoneInfo = null;
+// 引入SDK核心类
+var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var qqmapsdk;
 Page({
 
   /**
@@ -24,7 +27,12 @@ Page({
     imagehidden: true,
     ctPath: '',
     videohidden: true,
-    mimihidden:true
+    mimihidden:true,
+    linPhone:'',
+    getChange:true,
+    huozheng:'',
+    yanzheng:'',
+    time:'60'
   },
   getLocationClick: function() {
     this.data.operatetype = 0;
@@ -74,6 +82,7 @@ Page({
           location: longitudes + latitude
         })
         that.openlocation(jd, wd);
+        that.getLocationDetail(jd, wd);
       },
       fail: function(res) {
         console.log("获取地址失败", res)
@@ -169,6 +178,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'XQVBZ-V3RK6-Q7TSG-ENUVB-JGBO5-ZJF7Z'
+    });
     console.log("shop is onload")
     var that = this;
     // 监听网络状态变化。
@@ -1034,5 +1047,110 @@ Page({
   },
   contact:function(res){
     console.log("客服消息回调",res);
+  },
+  yanZhengInput: function (e) {
+    this.setData({
+      yanzheng: e.detail.value
+    })
+  },
+  phoneInput: function (e) {
+    this.setData({
+      linPhone: e.detail.value
+    })
+  },
+  yanzhengBtn: function () {
+    // console.log(app.globalData.userId);
+    var getChange = this.data.getChange
+    var n = this.data.time;
+    var that = this;
+    var phone = this.data.linPhone;
+    console.log(phone)
+    if (!util.isphone(phone)) {
+      wx.showToast({
+        title: '手机号有误',
+        icon: 'success',
+        duration: 1000
+      })
+    } else {
+      if (getChange) {
+        this.setData({
+          getChange: false
+        })
+        var time = setInterval(function () {
+          var str = '(' + n + ')' + '重新获取'
+          that.setData({
+            getText: str
+          })
+          if (n <= 0) {
+            that.setData({
+              getChange: true,
+              getText: '重新获取',
+              time: n
+            })
+            clearInterval(time);
+          }
+          n--;
+        }, 1000);
+        wx.request({
+          url: 'https://www.didu86.com/Clothes-manager-web/codenum',
+          data: {
+            tel: phone,
+          },
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var result = res.data.code;
+            console.log("成功",result)
+            that.setData({
+              huozheng: result,
+            })
+          },
+          fail: res=>{
+            console.log('失败', res)
+          }
+        })
+      }
+    }
+  },
+  btnsure:function(){
+    var that = this;
+    var huozheng = this.data.huozheng
+    var yanzheng = this.data.yanzheng
+    if (yanzheng.length >= 4) {
+      if (yanzheng == huozheng) {
+        wx.showModal({
+          content: '输入验证码成功',
+          showCancel: false,
+          success: function (res) {
+          }
+        })
+      } else {
+        wx.showModal({
+          content: '输入验证码有误',
+          showCancel: false,
+          success: function (res) {
+          }
+        })
+      }
+    }
+  },
+  getLocationDetail:function(jd,wd){
+    // 调用接口
+    qqmapsdk.reverseGeocoder({
+      location: {
+        latitude: wd,
+        longitude: jd
+      },
+      success: function (res) {
+        console.log('成功', res);
+      },
+      fail: function (res) {
+        console.log('失败', res);
+      },
+      complete: function (res) {
+        console.log('完成', res);
+      }
+    });
   }
 })

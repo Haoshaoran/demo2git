@@ -1,11 +1,13 @@
 //logs.js
 // const util = require('../../utils/util.js')
 var util=require('../../utils/util.js')
+var  app=getApp();
 Page({
   data: {
     logs: []
   },
   onLoad: function () {
+    app.editTabBar2();
     console.log('logs onLoad')
     this.setData({
       logs: (wx.getStorageSync('logs') || []).map(log => {

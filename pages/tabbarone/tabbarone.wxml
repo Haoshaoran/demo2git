@@ -177,7 +177,6 @@ show-message-card bindgetphonenumber='bindgetphonenumber'>{{phonemsg}}</button>
 </view>
 
 
-
 <template name="msgItem">
   <view class='container'>
     <text> {{index}}: {{msg}} </text>
