@@ -63,7 +63,7 @@
 <button bindtap='translate' >translate平移</button>
 <button bindtap='clip'>clip裁剪</button>
 <image src='{{ctPath}}' hidden='{{imagehidden}}'></image>
-<canvas style="width: 99%; height: 200rpx; border: 1rpx solid;" canvas-id="firstCanvas"
+<canvas style="width: 99%; height: 400rpx; border: 1rpx solid;" canvas-id="firstCanvas"
  bindtouchstart="start"
   bindtouchmove="move"
   bindtouchend="end" ></canvas>
