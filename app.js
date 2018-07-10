@@ -1,4 +1,6 @@
-
+/**
+ * 更新小程序
+ */
 const updateManager = wx.getUpdateManager()
 
 updateManager.onCheckForUpdate(function (res) {
